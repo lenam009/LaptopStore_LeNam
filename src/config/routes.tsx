@@ -4,7 +4,7 @@ interface routes {
     };
 }
 
-const routes: routes = {
+const routes = {
     home: {
         path: '/',
     },

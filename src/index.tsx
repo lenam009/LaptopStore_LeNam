@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import 'components/GlobalStyle/GlobalStyle.module.scss';
+import '@/assets/css/styles.css';
 import store from './redux/store';
 import { persistor } from './redux/store';
 
@@ -10,6 +11,10 @@ import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
 import HomePage from './pages/home';
 import Layout from './layout/layout';
+import ProductPage from './pages/admin/product/admin.product';
+import UserPage from './pages/admin/user/admin.user';
+import OrderPage from './pages/admin/order/admin.order';
+import CreateUserPage from './pages/admin/user/admin.user.create';
 
 import {
     RouterProvider,
@@ -45,6 +50,11 @@ const router = createBrowserRouter(
                     //     }
                     // }}
                 />
+
+                <Route path={routes.user.path} element={<UserPage />} />
+                <Route path={routes.createUser.path} element={<CreateUserPage />} />
+                <Route path={routes.product.path} element={<ProductPage />} />
+                <Route path={routes.order.path} element={<OrderPage />} />
             </Route>
         </Route>,
     ),

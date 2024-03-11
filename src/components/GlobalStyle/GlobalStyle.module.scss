@@ -1,7 +1,7 @@
-a[href] {
-    color: unset;
-    text-decoration: unset;
-}
+// a[href] {
+//     color: unset;
+//     text-decoration: unset;
+// }
 
 :root {
     --height-header: 56px;
@@ -14,13 +14,13 @@ a[href] {
     box-sizing: border-box;
 }
 
-html {
-    font-size: 62.5%;
-}
+// html {
+//     font-size: 62.5%;
+// }
 
 body {
-    font-size: 1.6rem;
-    line-height: 1.5;
+    // font-size: 1.6rem;
+    // line-height: 1.5;
     text-rendering: optimizeSpeed;
     overflow-y: overlay;
 }

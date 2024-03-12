@@ -15,6 +15,9 @@ import ProductPage from './pages/admin/product/admin.product';
 import UserPage from './pages/admin/user/admin.user';
 import OrderPage from './pages/admin/order/admin.order';
 import CreateUserPage from './pages/admin/user/admin.user.create';
+import UserDetail from './pages/admin/user/admin.user.detail';
+import UserUpdate from './pages/admin/user/admin.user.update';
+import UserDelete from './pages/admin/user/admin.user.delete';
 
 import {
     RouterProvider,
@@ -51,10 +54,15 @@ const router = createBrowserRouter(
                     // }}
                 />
 
-                <Route path={routes.user.path} element={<UserPage />} />
-                <Route path={routes.createUser.path} element={<CreateUserPage />} />
-                <Route path={routes.product.path} element={<ProductPage />} />
-                <Route path={routes.order.path} element={<OrderPage />} />
+                <Route>
+                    <Route path={routes.user.path} element={<UserPage />} />
+                    <Route path={routes.userDetail.dynamicPath} element={<UserDetail />} />
+                    <Route path={routes.userUpdate.dynamicPath} element={<UserUpdate />} />
+                    <Route path={routes.userDelete.dynamicPath} element={<UserDelete />} />
+                    <Route path={routes.createUser.path} element={<CreateUserPage />} />
+                    <Route path={routes.product.path} element={<ProductPage />} />
+                    <Route path={routes.order.path} element={<OrderPage />} />
+                </Route>
             </Route>
         </Route>,
     ),

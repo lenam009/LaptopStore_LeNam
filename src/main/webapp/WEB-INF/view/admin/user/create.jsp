@@ -11,6 +11,30 @@ prefix="form"%>
             src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
             crossorigin="anonymous"
         ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+
+        <script>
+            $(document).ready(() => {
+                const photoInp = $('#avatarFile');
+
+                photoInp.change(function (e) {
+                    file = this.files[0];
+                    if (file) {
+                        let reader = new FileReader();
+                        reader.onload = function (event) {
+                            $('#avatarPreview').attr('src', event.target.result);
+                            $('#avatarPreview').css('display', 'block');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+        </script>
     </head>
     <body class="sb-nav-fixed">
         <jsp:include page="../layout/header.jsp" />
@@ -21,40 +45,44 @@ prefix="form"%>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Create User</h1>
+                        <h1 class="mt-4"></h1>
 
                         <!-- Content -->
                         <div class="row">
                             <div class="col-md-6 col-12 mx-auto">
+                                <h1 class="mt-4">Create User</h1>
                                 <form:form
                                     method="post"
+                                    enctype="multipart/form-data"
                                     action="/admin/user/create"
                                     modelAttribute="newUser"
                                 >
                                     <!-- Email -->
-                                    <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label"
-                                            >Email:</label
-                                        >
-                                        <form:input
-                                            type="email"
-                                            class="form-control"
-                                            id="exampleInputEmail1"
-                                            aria-describedby="emailHelp"
-                                            path="email"
-                                        />
-                                    </div>
-                                    <!-- Password -->
-                                    <div class="mb-3">
-                                        <label for="exampleInputPassword1" class="form-label"
-                                            >Password:</label
-                                        >
-                                        <form:input
-                                            type="password"
-                                            class="form-control"
-                                            id="exampleInputPassword1"
-                                            path="password"
-                                        />
+                                    <div class="mb-3 row">
+                                        <div class="col">
+                                            <label for="exampleInputEmail1" class="form-label"
+                                                >Email:</label
+                                            >
+                                            <form:input
+                                                type="email"
+                                                class="form-control"
+                                                id="exampleInputEmail1"
+                                                aria-describedby="emailHelp"
+                                                path="email"
+                                            />
+                                        </div>
+                                        <!-- Password -->
+                                        <div class="col">
+                                            <label for="exampleInputPassword1" class="form-label"
+                                                >Password:</label
+                                            >
+                                            <form:input
+                                                type="password"
+                                                class="form-control"
+                                                id="exampleInputPassword1"
+                                                path="password"
+                                            />
+                                        </div>
                                     </div>
                                     <!-- Phone -->
                                     <div class="mb-3">
@@ -89,6 +117,48 @@ prefix="form"%>
                                             id="exampleInputAddress"
                                             path="address"
                                         />
+                                    </div>
+
+                                    <div class="mb-3 row">
+                                        <!-- Role-->
+                                        <div class="col-5">
+                                            <label for="exampleInputEmail1" class="form-label"
+                                                >Role:</label
+                                            >
+                                            <form:select
+                                                class="form-select"
+                                                aria-label="Default select example"
+                                                path="role"
+                                            >
+                                                <c:forEach var="roleOb" items="${roles}">
+                                                    <form:option value="${roleOb}"
+                                                        >${roleOb.name}</form:option
+                                                    >
+                                                </c:forEach>
+                                            </form:select>
+                                        </div>
+                                        <!-- Upload -->
+                                        <div class="col-5">
+                                            <label for="avatarFile" class="form-label"
+                                                >Avatar:</label
+                                            >
+                                            <div class="input-group mb-3">
+                                                <input
+                                                    type="file"
+                                                    class="form-control"
+                                                    id="avatarFile"
+                                                    name="lenamFile"
+                                                    accept=".png, .jpg, .jpeg"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <img
+                                                width="100%"
+                                                style="height: 69px; display: none"
+                                                id="avatarPreview"
+                                            />
+                                        </div>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary">Create</button>

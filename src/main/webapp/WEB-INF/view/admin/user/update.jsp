@@ -32,7 +32,7 @@ prefix="form"%>
                                 <form:form
                                     method="post"
                                     action="/admin/user/update"
-                                    modelAttribute="newUser"
+                                    modelAttribute="currentUser"
                                 >
                                     <!-- ID -->
                                     <div class="mb-3" style="display: none">
@@ -99,6 +99,48 @@ prefix="form"%>
                                             id="exampleInputAddress"
                                             path="address"
                                         />
+                                    </div>
+
+                                    <div class="mb-3 row">
+                                        <!-- Role-->
+                                        <div class="col-5">
+                                            <label for="exampleInputEmail1" class="form-label"
+                                                >Role:</label
+                                            >
+                                            <form:select
+                                                class="form-select"
+                                                aria-label="Default select example"
+                                                path="role"
+                                            >
+                                                <c:forEach var="roleOb" items="${roles}">
+                                                    <form:option value="${roleOb}"
+                                                        >${roleOb.name}</form:option
+                                                    >
+                                                </c:forEach>
+                                            </form:select>
+                                        </div>
+                                        <!-- Upload -->
+                                        <div class="col-5">
+                                            <label for="avatarFile" class="form-label"
+                                                >Avatar:</label
+                                            >
+                                            <div class="input-group mb-3">
+                                                <input
+                                                    type="file"
+                                                    class="form-control"
+                                                    id="avatarFile"
+                                                    name="lenamFile"
+                                                    accept=".png, .jpg, .jpeg"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <img
+                                                width="100%"
+                                                style="height: 69px; display: none"
+                                                id="avatarPreview"
+                                            />
+                                        </div>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary">Update</button>

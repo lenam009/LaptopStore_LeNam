@@ -1,17 +1,23 @@
 package com.lenam.laptopshop.controller.admin;
 
+import java.io.File;
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.lenam.laptopshop.domain.Order;
+import com.lenam.laptopshop.domain.Role;
 import com.lenam.laptopshop.domain.User;
+import com.lenam.laptopshop.service.RoleService;
+import com.lenam.laptopshop.service.UploadService;
 import com.lenam.laptopshop.service.UserService;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -19,9 +25,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserController {
 
     private final UserService userService;
+    private final RoleService roleService;
+    private final UploadService uploadService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService, UploadService uploadService,
+            PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.roleService = roleService;
+        this.uploadService = uploadService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @RequestMapping("/")
@@ -45,15 +58,31 @@ public class UserController {
     }
 
     // create
-    @RequestMapping("/admin/user/create")
+    @GetMapping("/admin/user/create")
     public String createUserPage(Model model) {
         model.addAttribute("newUser", new User());
+        List<Role> roles = this.roleService.getAllRole();
+        model.addAttribute("roles", roles);
         return "admin/user/create";
     }
 
-    @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
-    public String postCreateUserPage(Model model, @ModelAttribute("newUser") User newUser) {
-        // System.out.println("New user: " + newUser);
+    @PostMapping(value = "/admin/user/create")
+    public String postCreateUserPage(Model model, @ModelAttribute("newUser") User newUser,
+            @RequestParam("lenamFile") MultipartFile avatarFile) {
+        System.out.println("New user: " + newUser);
+
+        // Upload File
+        String avatarName = "";
+        if (!avatarFile.getOriginalFilename().isEmpty()) {
+            avatarName = this.uploadService.handleSaveUploadFile(avatarFile, "avatar");
+        }
+
+        // Hash Password
+        String passwordEncode = this.passwordEncoder.encode(newUser.getPassword());
+
+        newUser.setAvatar(avatarName);
+        newUser.setPassword(passwordEncode);
+
         this.userService.handleSaveUser(newUser);
         return "redirect:/admin/user";
     }
@@ -62,7 +91,11 @@ public class UserController {
     @RequestMapping("/admin/user/update/{id}")
     public String updateUserPage(Model model, @PathVariable long id) {
         User currentUser = this.userService.getOneUserById(id);
-        model.addAttribute("newUser", currentUser);
+        model.addAttribute("currentUser", currentUser);
+
+        List<Role> roles = this.roleService.getAllRole();
+        model.addAttribute("roles", roles);
+
         return "admin/user/update";
     }
 
@@ -74,8 +107,13 @@ public class UserController {
             currentUser.setFullName(newUser.getFullName());
             currentUser.setAddress(newUser.getAddress());
             currentUser.setPhone(newUser.getPhone());
+            currentUser.setRole(newUser.getRole());
             this.userService.handleSaveUser(currentUser);
         }
+
+        // Edit ảnh làm y phần create user ở phía trên + delete file ở dòng kế dưới
+        // this.uploadService.deleteFile("1710400467165-Screenshot (2).png") ;
+
         return "redirect:/admin/user";
     }
 

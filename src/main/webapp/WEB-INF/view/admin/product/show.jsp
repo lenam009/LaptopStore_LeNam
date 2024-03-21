@@ -24,9 +24,61 @@ prefix="form"%>
                         <h1 class="mt-4">Product</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active"><a href="/admin">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a>Products</a></li>
+                            <li class="breadcrumb-item active"><a>Manage Products</a></li>
                         </ol>
-                        <div class="row"><h1>show Product</h1></div>
+
+                        <div class="row">
+                            <div class="col-12 mx-auto">
+                                <div class="d-flex justify-content-between">
+                                    <h2>Table Product</h2>
+                                    <a
+                                        href="/admin/product/create"
+                                        class="btn btn-primary d-flex align-items-center"
+                                        >Create a product</a
+                                    >
+                                </div>
+                                <hr />
+
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Factory</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="user" items="${users}">
+                                            <tr>
+                                                <th>${user.id}</th>
+                                                <td>${user.email}</td>
+                                                <td>${user.fullName}</td>
+                                                <td>${user.role.name}</td>
+                                                <td>
+                                                    <a
+                                                        href="/admin/user/${user.id}"
+                                                        class="btn btn-success"
+                                                        >View</a
+                                                    >
+                                                    <a
+                                                        href="/admin/user/update/${user.id}"
+                                                        class="btn btn-warning mx-2"
+                                                        >Update</a
+                                                    >
+                                                    <a
+                                                        href="/admin/user/delete/${user.id}"
+                                                        class="btn btn-danger"
+                                                        >Delete</a
+                                                    >
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </main>
 

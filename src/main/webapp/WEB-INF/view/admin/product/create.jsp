@@ -1,7 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%> <%@ taglib prefix="c"
 uri="http://java.sun.com/jsp/jstl/core"%> <%@taglib uri="http://www.springframework.org/tags/form"
 prefix="form"%>
-
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -56,113 +55,109 @@ prefix="form"%>
                                     method="post"
                                     enctype="multipart/form-data"
                                     action="/admin/user/create"
-                                    modelAttribute="newUser"
+                                    modelAttribute="newProduct"
                                 >
                                     <!-- Email -->
                                     <div class="mb-3 row">
                                         <div class="col">
                                             <label for="exampleInputEmail1" class="form-label"
-                                                >Email:</label
+                                                >Name:</label
                                             >
-
-                                            <c:set var="emailError"
-                                                ><form:errors
-                                                    path="email"
-                                                    cssClass="invalid-feedback"
-                                            /></c:set>
-
                                             <form:input
-                                                type="email"
-                                                class="form-control ${not empty emailError ? 'is-invalid': ''}"
+                                                type="text"
+                                                class="form-control"
                                                 id="exampleInputEmail1"
                                                 aria-describedby="emailHelp"
-                                                path="email"
+                                                path="name"
                                             />
-                                            ${emailError}
                                         </div>
                                         <!-- Password -->
                                         <div class="col">
                                             <label for="exampleInputPassword1" class="form-label"
-                                                >Password:</label
+                                                >Price:</label
                                             >
-
-                                            <c:set var="passwordError"
-                                                ><form:errors
-                                                    path="password"
-                                                    cssClass="invalid-feedback"
-                                            /></c:set>
-
                                             <form:input
-                                                type="password"
-                                                class="form-control ${not empty passwordError ? 'is-invalid': ''}"
+                                                type="number"
+                                                class="form-control"
                                                 id="exampleInputPassword1"
-                                                path="password"
+                                                path="price"
                                             />
-                                            ${passwordError}
                                         </div>
                                     </div>
                                     <!-- Phone -->
                                     <div class="mb-3">
                                         <label for="exampleInputTel" class="form-label"
-                                            >Phone number:</label
+                                            >Detail description:</label
                                         >
-                                        <form:input
-                                            type="tel"
+                                        <form:textarea
+                                            rows="3"
+                                            type="text"
                                             class="form-control"
                                             id="exampleInputTel"
-                                            path="phone"
+                                            path="detailDesc"
                                         />
                                     </div>
+
                                     <!-- Full name -->
-                                    <div class="mb-3">
-                                        <label for="exampleInputFullName" class="form-label"
-                                            >Full name:</label
-                                        >
-
-                                        <c:set var="fullNameError"
-                                            ><form:errors
-                                                path="fullName"
-                                                cssClass="invalid-feedback"
-                                        /></c:set>
-
-                                        <form:input
-                                            type="text"
-                                            class="form-control ${not empty fullNameError ? 'is-invalid': ''}"
-                                            id="exampleInputFullName"
-                                            path="fullName"
-                                        />
-                                        ${fullNameError}
-                                    </div>
-                                    <!-- Address -->
-                                    <div class="mb-3">
-                                        <label for="exampleInputAddress" class="form-label"
-                                            >Address:</label
-                                        >
-                                        <form:input
-                                            class="form-control"
-                                            id="exampleInputAddress"
-                                            path="address"
-                                        />
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <label for="exampleInputFullName" class="form-label"
+                                                >Short description:</label
+                                            >
+                                            <form:input
+                                                type="text"
+                                                class="form-control"
+                                                id="exampleInputFullName"
+                                                path="shortDesc"
+                                            />
+                                        </div>
+                                        <div class="col">
+                                            <label for="exampleInputAddress" class="form-label"
+                                                >Quantity:</label
+                                            >
+                                            <form:input
+                                                class="form-control"
+                                                id="exampleInputAddress"
+                                                path="quantity"
+                                            />
+                                        </div>
                                     </div>
 
-                                    <div class="mb-3 row">
-                                        <!-- Role-->
-                                        <div class="col-5">
-                                            <label for="exampleInputEmail1" class="form-label"
-                                                >Role:</label
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <label for="exampleInputFullName" class="form-label"
+                                                >Factory:</label
                                             >
                                             <form:select
                                                 class="form-select"
                                                 aria-label="Default select example"
-                                                path="role"
+                                                path="factory"
                                             >
-                                                <c:forEach var="roleOb" items="${roles}">
-                                                    <form:option value="${roleOb}"
-                                                        >${roleOb.name}</form:option
-                                                    >
-                                                </c:forEach>
+                                                <form:option value="Apple">Apple</form:option>
+                                                <form:option value="Asus">Asus</form:option>
+                                                <form:option value="Lenovo">Lenovo</form:option>
+                                                <form:option value="Dell">Dell</form:option>
+                                                <form:option value="Gigabyte">Gigabyte</form:option>
                                             </form:select>
                                         </div>
+                                        <div class="col">
+                                            <label for="exampleInputFullName" class="form-label"
+                                                >Target:</label
+                                            >
+                                            <form:select
+                                                class="form-select"
+                                                aria-label="Default select example"
+                                                path="target"
+                                            >
+                                                <form:option value="Sinhvien-vanphong"
+                                                    >Sinh viên - văn phòng</form:option
+                                                >
+                                                <form:option value="Gaming">Gaming</form:option>
+                                            </form:select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 row">
                                         <!-- Upload -->
                                         <div class="col-5">
                                             <label for="avatarFile" class="form-label"

@@ -1,11 +1,12 @@
 package com.lenam.laptopshop.controller.admin;
 
-import java.io.File;
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import com.lenam.laptopshop.domain.User;
 import com.lenam.laptopshop.service.RoleService;
 import com.lenam.laptopshop.service.UploadService;
 import com.lenam.laptopshop.service.UserService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,20 +66,33 @@ public class UserController {
         model.addAttribute("newUser", new User());
         List<Role> roles = this.roleService.getAllRole();
         model.addAttribute("roles", roles);
+        System.out.println("roles + " + roles);
         return "admin/user/create";
     }
 
     @PostMapping(value = "/admin/user/create")
-    public String postCreateUserPage(Model model, @ModelAttribute("newUser") User newUser,
+    public String postCreateUserPage(Model model, @ModelAttribute("newUser") @Valid User newUser,
+            BindingResult newUserBindingResult,
             @RequestParam("lenamFile") MultipartFile avatarFile) {
-        System.out.println("New user: " + newUser);
 
-        // Upload File
-        String avatarName = "";
-        if (!avatarFile.getOriginalFilename().isEmpty()) {
-            avatarName = this.uploadService.handleSaveUploadFile(avatarFile, "avatar");
+        // System.out.println("New user: " + newUser);
+
+        List<Role> roles = this.roleService.getAllRole();
+        model.addAttribute("roles", roles);
+
+        // List<FieldError> errors = newUserBindingResult.getFieldErrors();
+        // for (FieldError error : errors) {
+        // System.out.println("newUserValidate: " + error.getField() + " - " +
+        // error.getDefaultMessage());
+        // }
+
+        // validate
+        if (newUserBindingResult.hasErrors()) {
+            return "admin/user/create";
         }
 
+        // Upload File
+        String avatarName = this.uploadService.handleSaveUploadFile(avatarFile, "avatar");
         // Hash Password
         String passwordEncode = this.passwordEncoder.encode(newUser.getPassword());
 

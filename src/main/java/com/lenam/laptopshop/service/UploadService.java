@@ -21,6 +21,11 @@ public class UploadService {
     }
 
     public String handleSaveUploadFile(MultipartFile avatarFile, String targetFolder) {
+
+        if (avatarFile.isEmpty()) {
+            return "";
+        }
+
         try {
             byte[] bytes;
             bytes = avatarFile.getBytes();

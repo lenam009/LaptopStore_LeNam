@@ -1,4 +1,4 @@
-package com.lenam.laptopshop.controller.admin;
+package com.lenam.laptopshop.controller.client;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

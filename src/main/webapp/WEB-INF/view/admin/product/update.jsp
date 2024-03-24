@@ -6,7 +6,7 @@ prefix="form"%>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
-        <link href="../../css/styles.css" rel="stylesheet" />
+        <link href="../../../css/styles.css" rel="stylesheet" />
         <script
             src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
             crossorigin="anonymous"
@@ -21,6 +21,13 @@ prefix="form"%>
         <script>
             $(document).ready(() => {
                 const photoInp = $('#avatarFile');
+                const fileName = '${newProduct.image}';
+
+                if (fileName) {
+                    const url = '/images/product/' + fileName;
+                    $('#avatarPreview').attr('src', url);
+                    $('#avatarPreview').css('display', 'block');
+                }
 
                 photoInp.change(function (e) {
                     file = this.files[0];
@@ -50,13 +57,15 @@ prefix="form"%>
                         <!-- Content -->
                         <div class="row">
                             <div class="col-md-6 col-12 mx-auto">
-                                <h1 class="mt-4">Create Product</h1>
+                                <h1 class="mt-4">Update Product</h1>
                                 <form:form
                                     method="post"
                                     enctype="multipart/form-data"
-                                    action="/admin/product/create"
+                                    action="/admin/product/update"
                                     modelAttribute="newProduct"
                                 >
+                                    <form:input type="text" path="id" style="display: none" />
+                                    <form:input type="text" path="image" style="display: none" />
                                     <!-- Email -->
                                     <div class="mb-3 row">
                                         <div class="col">
@@ -134,7 +143,6 @@ prefix="form"%>
                                             <label for="exampleInputAddress" class="form-label"
                                                 >Quantity:</label
                                             >
-
                                             <c:set var="quantityError">
                                                 <form:errors
                                                     path="quantity"
@@ -147,6 +155,7 @@ prefix="form"%>
                                                 id="exampleInputAddress"
                                                 path="quantity"
                                             />
+
                                             ${quantityError}
                                         </div>
                                     </div>
@@ -210,7 +219,7 @@ prefix="form"%>
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary">Create</button>
+                                    <button type="submit" class="btn btn-primary">Update</button>
                                 </form:form>
                             </div>
                         </div>
@@ -225,6 +234,6 @@ prefix="form"%>
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
             crossorigin="anonymous"
         ></script>
-        <script src="../../js/scripts.js"></script>
+        <script src="../../../js/scripts.js"></script>
     </body>
 </html>

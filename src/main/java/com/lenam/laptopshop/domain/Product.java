@@ -1,13 +1,26 @@
 package com.lenam.laptopshop.domain;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Constraint;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "products")
@@ -16,12 +29,25 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotNull
+    @NotEmpty(message = "Tên sản phẩm không được trống")
     private String name;
+
+    @NotNull
+    @DecimalMin(value = "0", inclusive = false, message = "Gía phải lớn hơn 0")
     private double price;
     private String image;
+
+    @NotNull
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
     private String shortDesc;
-    private String quantity;
+
+    @NotNull
+    @Min(value = 1, message = "Số lượng tối thiểu là 1")
+    // @QuantityConstraint
+    private long quantity;
     private String sold;
     private String factory;
     private String target;
@@ -77,11 +103,11 @@ public class Product {
         this.shortDesc = shortDesc;
     }
 
-    public String getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 

@@ -21,27 +21,41 @@ prefix="form"%>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Manage Users</h1>
+                        <h1 class="mt-4">Manage Product</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active"><a href="/admin">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a>User Detail</a></li>
+                            <li class="breadcrumb-item active"><a>Product Detail</a></li>
                         </ol>
                         <!-- Content -->
                         <div class="row">
                             <div class="col-12 mx-auto">
                                 <div class="d-flex justify-content-between">
-                                    <h2>User Detail with id: ${user.id}</h2>
+                                    <h2>User Detail with id: ${product.id}</h2>
                                 </div>
+
+                                <img
+                                    style="height: 69px"
+                                    class="${empty product.image ? 'd-none ' : ''}"
+                                    id="avatarPreview"
+                                    src="/images/product/${product.image}"
+                                />
 
                                 <hr />
 
                                 <div class="card" style="width: 60%">
-                                    <div class="card-header">User information</div>
+                                    <div class="card-header">Product information</div>
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">ID: ${user.id}</li>
-                                        <li class="list-group-item">Email: ${user.email}</li>
-                                        <li class="list-group-item">FullName: ${user.fullName}</li>
-                                        <li class="list-group-item">Address: ${user.address}</li>
+                                        <li class="list-group-item">ID: ${product.id}</li>
+                                        <li class="list-group-item">Name: ${product.name}</li>
+                                        <li class="list-group-item">Price: ${product.price}</li>
+                                        <li class="list-group-item">
+                                            Detail desc: ${product.detailDesc}
+                                        </li>
+                                        <li class="list-group-item">
+                                            Short desc: ${product.shortDesc}
+                                        </li>
+                                        <li class="list-group-item">Factory: ${product.factory}</li>
+                                        <li class="list-group-item">Target: ${product.target}</li>
                                     </ul>
                                 </div>
                             </div>

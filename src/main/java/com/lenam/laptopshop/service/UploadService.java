@@ -57,11 +57,11 @@ public class UploadService {
         }
     }
 
-    public void deleteFile(String fileName) {
+    public void deleteFile(String oldFileName, String targetFolder) {
         String rootPath = this.servletContext.getRealPath("/resources/images");
         try {
-            File file = new File(rootPath + "/avatar/" + fileName);
-            file.getAbsolutePath();
+            File file = new File(rootPath + File.separator + targetFolder + File.separator + oldFileName);
+
             if (file.delete()) {
                 System.out.println(file.getName() + " is deleted!");
             } else {

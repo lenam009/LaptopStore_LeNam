@@ -71,7 +71,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/admin/user/create")
-    public String postCreateUserPage(Model model, @ModelAttribute("newUser") @Valid User newUser,
+    public String postCreateUserPage(Model model,
+            @ModelAttribute("newUser") @Valid User newUser,
             BindingResult newUserBindingResult,
             @RequestParam("lenamFile") MultipartFile avatarFile) {
 

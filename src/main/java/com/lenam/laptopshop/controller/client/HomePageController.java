@@ -6,7 +6,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -17,6 +16,7 @@ import com.lenam.laptopshop.service.ProductService;
 import com.lenam.laptopshop.service.RoleService;
 import com.lenam.laptopshop.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +38,7 @@ public class HomePageController {
     }
 
     @GetMapping("/")
-    public String HomePage(Model model) {
+    public String HomePage(Model model, HttpServletRequest request) {
         List<Product> products = this.productService.getAllProducts();
         model.addAttribute("products", products);
         return "client/homepage/show";
@@ -81,6 +81,12 @@ public class HomePageController {
     public String LoginPage(Model model) {
 
         return "client/auth/login";
+    }
+
+    @GetMapping("/access-deny")
+    public String getDenyPage(Model model) {
+
+        return "client/auth/deny";
     }
 
 }

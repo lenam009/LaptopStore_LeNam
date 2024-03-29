@@ -2,12 +2,21 @@ package com.lenam.laptopshop.domain.dto;
 
 import com.lenam.laptopshop.service.validator.RegisterChecked;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+
 @RegisterChecked
 public class RegisterDTO {
     private String firstName;
     private String lastName;
+
+    @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
+
+    @NotEmpty(message = "Password không để trống")
     private String password;
+
+    @NotEmpty(message = "Confirm Password không để trống")
     private String confirmPassword;
 
     public String getFirstName() {

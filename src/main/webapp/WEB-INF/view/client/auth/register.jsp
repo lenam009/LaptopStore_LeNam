@@ -67,22 +67,27 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <c:set var="confirmPasswordError"
-                                                            ><form:errors path="confirmPassword" cssClass="invalid-feedback"
+                                                        <c:set var="passwordError"
+                                                            ><form:errors path="password" cssClass="invalid-feedback"
                                                         /></c:set>
 
                                                         <form:input
-                                                            class="form-control ${not empty confirmPasswordError ? 'is-invalid': ''}"
+                                                            class="form-control ${not empty passwordError ? 'is-invalid': ''}"
                                                             id="inputPassword"
                                                             type="password"
                                                             placeholder="Create a password"
                                                             path="password"
                                                         />
                                                         <label for="inputPassword">Password</label>
+                                                        ${passwordError}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
+                                                        <c:set var="confirmPasswordError"
+                                                            ><form:errors path="confirmPassword" cssClass="invalid-feedback"
+                                                        /></c:set>
+
                                                         <form:input
                                                             class="form-control ${not empty confirmPasswordError ? 'is-invalid': ''}"
                                                             id="inputPasswordConfirm"

@@ -8,10 +8,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
-            rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet" />
 
         <!-- Icon Font Stylesheet -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
@@ -74,11 +71,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
                                             <div class="col-md-6 col-lg-4 col-xl-3">
                                                 <div class="rounded position-relative fruite-item">
                                                     <div class="fruite-img">
-                                                        <img
-                                                            src="/images/product/${product.image}"
-                                                            class="img-fluid w-100 rounded-top"
-                                                            alt=""
-                                                        />
+                                                        <img src="/images/product/${product.image}" class="img-fluid w-100 rounded-top" alt="" />
                                                     </div>
                                                     <div
                                                         class="text-white bg-secondary px-3 py-1 rounded position-absolute"
@@ -98,9 +91,12 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
                                                                 <fmt:formatNumber type="number" value=" ${product.price}" />
                                                                 đ
                                                             </p>
-                                                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
-                                                                ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a
-                                                            >
+                                                            <form method="post" action="/add-product-to-cart/${product.id}">
+                                                                <button href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                                    <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                                                </button>
+                                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>

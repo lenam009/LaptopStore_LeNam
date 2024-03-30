@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+// Redirect after login
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
@@ -53,7 +54,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
 
-        // Set user login into Session
+        // Set user login into session
 
         // Get email
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -64,6 +65,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         if (user != null) {
             session.setAttribute("fullName", user.getFullName());
             session.setAttribute("avatar", user.getAvatar());
+            session.setAttribute("id", user.getId());
+            session.setAttribute("email", user.getEmail());
         }
     }
 

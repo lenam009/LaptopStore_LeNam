@@ -27,7 +27,7 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     private List<CartDetail> cartDetails;
 
-    @Min(value = 1)
+    @Min(value = 0)
     private int sum;
 
     public long getId() {
@@ -54,7 +54,7 @@ public class Cart {
         this.cartDetails = cartDetails;
     }
 
-    public double getSum() {
+    public int getSum() {
         return sum;
     }
 

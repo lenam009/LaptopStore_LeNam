@@ -5,7 +5,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
-        <link href="../css/styles.css" rel="stylesheet" />
+        <link href="../../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
@@ -34,23 +34,21 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
                                     <thead>
                                         <tr>
                                             <th>Id</th>
+                                            <th>Image</th>
+                                            <th>Quantity</th>
                                             <th>Total Price</th>
-                                            <th>User</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="order" items="${orders}">
+                                        <c:forEach var="orderDetail" items="${orderDetails}">
                                             <tr>
-                                                <th>${order.id}</th>
-                                                <td><fmt:formatNumber type="number" value="${order.totalPrice}" /> đ</td>
-                                                <td>${order.user.fullName}</td>
-                                                <td>${order.status}</td>
+                                                <th>${orderDetail.id}</th>
+                                                <td><img width="100" src="/images/product/${orderDetail.product.image}" /></td>
+                                                <td>${orderDetail.quantity}</td>
+                                                <td><fmt:formatNumber type="number" value="${orderDetail.price}" /> đ</td>
                                                 <td>
-                                                    <a href="/admin/order/${order.id}" class="btn btn-success">View</a>
-                                                    <a href="/admin/order/update/${order.id}" class="btn btn-warning mx-2">Update</a>
-                                                    <a href="/admin/user/delete/${user.id}" class="btn btn-danger">Delete</a>
+                                                    <a href="/admin/product/${orderDetail.product.id}" class="btn btn-success">View</a>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -66,6 +64,6 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="../js/scripts.js"></script>
+        <script src="../../js/scripts.js"></script>
     </body>
 </html>

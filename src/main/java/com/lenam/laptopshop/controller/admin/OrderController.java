@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lenam.laptopshop.domain.Order;
 import com.lenam.laptopshop.domain.Product;
+import com.lenam.laptopshop.domain.User;
 import com.lenam.laptopshop.service.OrderService;
 
 @Controller
@@ -48,11 +49,14 @@ public class OrderController {
     }
 
     @PostMapping("/admin/order/update")
-    public String updatePostOrderPage(Model model, @PathVariable long id) {
-        Order order = this.orderService.getOrderById(id);
-        model.addAttribute("orderDetails", order.getOrderDetails());
+    public String updatePostOrderPage(Model model, @ModelAttribute("order") Order order) {
+        Order currentOrder = this.orderService.getOrderById(order.getId());
 
-        return "admin/order/show-orderDetail";
+        if (currentOrder != null) {
+            currentOrder.setStatus(order.getStatus());
+        }
+
+        return "redirect:/admin/order";
     }
 
 }

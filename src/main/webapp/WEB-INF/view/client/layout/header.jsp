@@ -48,7 +48,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                                     <div class="text-center my-3"><c:out value="${pageContext.request.userPrincipal.name}" /></div>
                                 </li>
                                 <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
-                                <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
+                                <li><a class="dropdown-item" href="/order-history">Lịch sử mua hàng</a></li>
                                 <li>
                                     <hr class="dropdown-divider" />
                                 </li>

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.lenam.laptopshop.domain.Order;
+import com.lenam.laptopshop.domain.User;
 import com.lenam.laptopshop.repository.OrderRepository;
 
 @Service
@@ -33,6 +34,15 @@ public class OrderService {
 
     public long getCountOrder() {
         return this.orderRepository.count();
+    }
+
+    public List<Order> getOrdersByUser(User user) {
+        List<Order> orders = this.orderRepository.findByUser(user);
+        return orders;
+    }
+
+    public void handleSaveOrder(Order order) {
+        this.orderRepository.save(order);
     }
 
 }

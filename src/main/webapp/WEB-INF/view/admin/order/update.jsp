@@ -29,7 +29,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%>
                         <!-- Content -->
                         <div class="row">
                             <div class="col-md-6 col-12 mx-auto">
-                                <h1 class="mt-4">Update Product</h1>
+                                <h1 class="mt-4">Update Order</h1>
                                 <form:form method="post" action="/admin/order/update" modelAttribute="order">
                                     <div class="row mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Name:</label>

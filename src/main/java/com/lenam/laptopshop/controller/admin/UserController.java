@@ -13,12 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.lenam.laptopshop.domain.Cart;
+import com.lenam.laptopshop.domain.Order;
 import com.lenam.laptopshop.domain.Role;
 import com.lenam.laptopshop.domain.User;
+import com.lenam.laptopshop.service.OrderService;
 import com.lenam.laptopshop.service.RoleService;
 import com.lenam.laptopshop.service.UploadService;
 import com.lenam.laptopshop.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,21 +35,17 @@ public class UserController {
     private final UserService userService;
     private final RoleService roleService;
     private final UploadService uploadService;
+    private final OrderService orderService;
     private final PasswordEncoder passwordEncoder;
 
     public UserController(UserService userService, RoleService roleService, UploadService uploadService,
-            PasswordEncoder passwordEncoder) {
+            OrderService orderService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.uploadService = uploadService;
+        this.orderService = orderService;
         this.passwordEncoder = passwordEncoder;
     }
-
-    // @RequestMapping("/")
-    // public String getHomePage(Model model) {
-    // List<User> arrUser = this.userService.getAllUsersByEmail("test@gmail.com");
-    // return "hello";
-    // }
 
     @RequestMapping("/admin/user")
     public String getUsersPage(Model model) {
@@ -146,4 +147,19 @@ public class UserController {
         this.userService.handleDeleteUser(user.getId());
         return "redirect:/admin/user";
     }
+
+    @GetMapping("/order-history")
+    public String getMethodName(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User currentUser = new User();// null
+        long id = (long) session.getAttribute("id");
+        currentUser.setId(id);
+
+        List<Order> orders = this.orderService.getOrdersByUser(currentUser);
+
+        model.addAttribute("orders", orders);
+
+        return "client/homepage/order-history";
+    }
+
 }

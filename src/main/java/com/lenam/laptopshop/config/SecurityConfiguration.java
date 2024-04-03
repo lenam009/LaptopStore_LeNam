@@ -64,13 +64,14 @@ public class SecurityConfiguration {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        // Allow transfer the call FORWARD and INCLUDE
                         .dispatcherTypeMatchers(DispatcherType.FORWARD,
                                 DispatcherType.INCLUDE)
                         .permitAll()
 
                         // Everybody can access
                         .requestMatchers("/", "/product/**", "/login", "/client/**", "/css/**", "/js/**",
-                                "/images/**")
+                                "/images/**", "/register")
                         .permitAll()
 
                         // Only admin can access

@@ -1,8 +1,13 @@
 package com.lenam.laptopshop.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.lenam.laptopshop.domain.Cart;
@@ -10,6 +15,7 @@ import com.lenam.laptopshop.domain.CartDetail;
 import com.lenam.laptopshop.domain.Order;
 import com.lenam.laptopshop.domain.OrderDetail;
 import com.lenam.laptopshop.domain.Product;
+import com.lenam.laptopshop.domain.Product_;
 import com.lenam.laptopshop.domain.User;
 import com.lenam.laptopshop.repository.CartDetailRepository;
 import com.lenam.laptopshop.repository.CartRepository;
@@ -17,6 +23,9 @@ import com.lenam.laptopshop.repository.OrderDetailRepository;
 import com.lenam.laptopshop.repository.OrderRepository;
 import com.lenam.laptopshop.repository.ProductRepository;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.servlet.http.HttpSession;
 
 @Service
@@ -41,6 +50,46 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return this.productRepository.findAll();
+    }
+
+    private Specification<Product> columnEqual(String column, String value) {
+        return (root, query, builder) -> builder.equal(root.get(column), value);
+    }
+
+    private Specification<Product> columnFactoryNameTargetPriceEqual(Map<String, String> listColumnValue,
+            double lowPriceValue, double highPriceValue) {
+        return (root, query, builder) -> {
+            List<Predicate> predicates = new ArrayList<Predicate>();
+
+            for (var x : listColumnValue.entrySet()) {
+                if (x.getKey() == Product_.PRICE) {
+                    predicates.add(builder.and(builder.greaterThanOrEqualTo(root.get(x.getKey()), lowPriceValue),
+                            builder.lessThan(root.get(Product_.PRICE), highPriceValue)));
+                } else {
+                    predicates.add(builder.equal(root.get(x.getKey()), x.getValue()));
+                }
+            }
+
+            Predicate finalQuery = builder.and(predicates.toArray(new Predicate[0]));
+            return finalQuery;
+        };
+    }
+
+    private Specification<Product> priceLike(double lowPrice, double highPrice) {
+        return (root, query, builder) -> builder.and(builder.greaterThanOrEqualTo(root.get(Product_.PRICE), lowPrice),
+                builder.lessThan(root.get(Product_.PRICE), highPrice));
+    }
+
+    public Page<Product> getAllProductsByPage(Pageable pageable) {
+        return this.productRepository.findAll(pageable);
+    }
+
+    public Page<Product> getAllProductsByPageAndFilterEqualColumn(Pageable pageable, String column, String value) {
+        return this.productRepository.findAll(this.columnEqual(column, value), pageable);
+    }
+
+    public Page<Product> getAllProductsByPageAndFilterPrice(Pageable pageable, double lowPrice, double highPrice) {
+        return this.productRepository.findAll(this.priceLike(lowPrice, highPrice), pageable);
     }
 
     public Optional<Product> getProductById(long id) {

@@ -2,6 +2,8 @@ package com.lenam.laptopshop.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.lenam.laptopshop.domain.User;
@@ -19,6 +21,10 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return this.userRepository.findAll();
+    }
+
+    public Page<User> getAllUsersByPage(Pageable pageable) {
+        return this.userRepository.findAll(pageable);
     }
 
     public List<User> getAllUsersByEmail(String email) {

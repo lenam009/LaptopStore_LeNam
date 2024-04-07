@@ -1,7 +1,11 @@
 package com.lenam.laptopshop.controller.admin;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,7 +21,6 @@ import com.lenam.laptopshop.service.ProductService;
 import com.lenam.laptopshop.service.UploadService;
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ProductController {
@@ -31,15 +34,32 @@ public class ProductController {
     }
 
     @GetMapping("/admin/product")
-    public String getProductPage(Model model) {
-        List<Product> products = this.productService.getAllProducts();
-        model.addAttribute("products", products);
+    public String getProductPage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            } else {
+                // page = 1
+            }
+        } catch (Exception ex) {
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, 2);
+
+        Page<Product> productsPage = this.productService.getAllProductsByPage(pageable);
+        List<Product> productsList = productsPage.getContent();
+
+        model.addAttribute("products", productsList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productsPage.getTotalPages());
 
         return "admin/product/show";
     }
 
     @GetMapping("/admin/product/{id}")
-    public String getProductPage(Model model, @PathVariable long id) {
+    public String getDetailProductPage(Model model, @PathVariable long id) {
         Product product = this.productService.getProductById(id).get();
         model.addAttribute("product", product);
 

@@ -86,7 +86,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
 
                                                         <p>${product.shortDesc}</p>
 
-                                                        <div class="d-flex justify-content-center flex-lg-wrap">
+                                                        <div class="d-flex justify-content-center flex-lg-wrap flex-column">
                                                             <p class="text-dark fs-5 fw-bold mb-4">
                                                                 <fmt:formatNumber type="number" value=" ${product.price}" />
                                                                 đ

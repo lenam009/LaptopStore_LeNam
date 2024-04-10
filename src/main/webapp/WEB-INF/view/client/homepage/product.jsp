@@ -46,67 +46,63 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
                     <div class="col-4">
                         <form method="post">
                             <!-- Hãng sản xuất -->
-                            <div class="row g-1 mb-3">
+                            <div class="row g-1 mb-3" id="factoryFilter">
                                 <p class="fw-bolder">Hãng sản xuất</p>
 
                                 <div class="col-3 form-check">
-                                    <input class="form-check-input" type="checkbox" value="APPLE" id="flexCheckDefault" />
+                                    <input class="form-check-input" name="factory" type="checkbox" value="APPLE" id="flexCheckDefault" />
                                     <label class="form-check-label" for="flexCheckDefault"> Apple </label>
                                 </div>
                                 <div class="col-3 form-check">
-                                    <input class="form-check-input" type="checkbox" value="ASUS" id="flexCheckDefault2" />
+                                    <input class="form-check-input" name="factory" type="checkbox" value="ASUS" id="flexCheckDefault2" />
                                     <label class="form-check-label" for="flexCheckDefault2"> Asus </label>
                                 </div>
                                 <div class="col-3 form-check">
-                                    <input class="form-check-input" type="checkbox" value="DELL" id="flexCheckDefault3" />
+                                    <input class="form-check-input" name="factory" type="checkbox" value="DELL" id="flexCheckDefault3" />
                                     <label class="form-check-label" for="flexCheckDefault3"> Dell </label>
                                 </div>
                                 <div class="col-3 form-check">
-                                    <input class="form-check-input" type="checkbox" value="LENOVO" id="flexCheckDefault4" />
+                                    <input class="form-check-input" name="factory" type="checkbox" value="LENOVO" id="flexCheckDefault4" />
                                     <label class="form-check-label" for="flexCheckDefault4"> Lenovo </label>
                                 </div>
                                 <div class="col-3 form-check">
-                                    <input class="form-check-input" type="checkbox" value="ACER" id="flexCheckDefault5" />
+                                    <input class="form-check-input" name="factory" type="checkbox" value="ACER" id="flexCheckDefault5" />
                                     <label class="form-check-label" for="flexCheckDefault5"> Acer </label>
-                                </div>
-                                <div class="col-3 form-check">
-                                    <input class="form-check-input" type="checkbox" value="DELL" id="flexCheckDefault6" />
-                                    <label class="form-check-label" for="flexCheckDefault6"> Dell </label>
                                 </div>
                             </div>
                             <!-- Mục đích sử dụng -->
-                            <div class="row g-1 mb-3">
+                            <div class="row g-1 mb-3" id="targetFilter">
                                 <p class="fw-bolder">Mục đích sử dụng</p>
                                 <div class="col-6 form-check">
-                                    <input class="form-check-input" type="checkbox" value="GAMING" id="GAMING" />
+                                    <input class="form-check-input" name="target" type="checkbox" value="GAMING" id="GAMING" />
                                     <label class="form-check-label" for="GAMING"> Gaming </label>
                                 </div>
                                 <div class="col-6 form-check">
-                                    <input class="form-check-input" type="checkbox" value="SINHVIEN-VANPHONG" id="SINHVIEN-VANPHONG" />
+                                    <input class="form-check-input" name="target" type="checkbox" value="SINHVIEN-VANPHONG" id="SINHVIEN-VANPHONG" />
                                     <label class="form-check-label" for="SINHVIEN-VANPHONG"> Sinh viên văn phòng </label>
                                 </div>
                                 <div class="col-6 form-check">
-                                    <input class="form-check-input" type="checkbox" value="MONG-NHE" id="MONG-NHE" />
+                                    <input class="form-check-input" name="target" type="checkbox" value="MONG-NHE" id="MONG-NHE" />
                                     <label class="form-check-label" for="MONG-NHE"> Mỏng nhẹ </label>
                                 </div>
                             </div>
                             <!-- Mức giá -->
-                            <div class="row g-1 mb-3">
+                            <div class="row g-1 mb-3" id="priceFilter">
                                 <p class="fw-bolder">Mức giá</p>
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" type="checkbox" value="duoi10" id="duoi10" />
+                                    <input class="form-check-input" name="min-price" type="checkbox" value="10000000" id="duoi10" />
                                     <label class="form-check-label" for="duoi10"> Dưới 10 triệu </label>
                                 </div>
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" type="checkbox" value="tu10den15" id="tu10den15" />
+                                    <input class="form-check-input" name="price" type="checkbox" value="10-toi-15-trieu" id="tu10den15" />
                                     <label class="form-check-label" for="tu10den15"> Từ 10 đến 15 triệu </label>
                                 </div>
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" type="checkbox" value="tu15den20" id="tu15den20" />
+                                    <input class="form-check-input" name="price" type="checkbox" value="15-toi-20-trieu" id="tu15den20" />
                                     <label class="form-check-label" for="tu15den20"> Từ 15 đến 20 triệu </label>
                                 </div>
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" type="checkbox" value="tren20" id="tren20" />
+                                    <input class="form-check-input" name="max-price" type="checkbox" value="tren-20-trieu" id="tren20" />
                                     <label class="form-check-label" for="tren20"> Trên 20 triệu </label>
                                 </div>
                             </div>
@@ -114,21 +110,21 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
                             <div class="row g-1 mb-3">
                                 <p class="fw-bolder">Sắp xếp</p>
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" name="flexRadioDefault" type="radio" value="giatangdan" id="giatangdan" />
+                                    <input class="form-check-input" name="radio-sort" type="radio" value="gia-tang-dan" id="giatangdan" />
                                     <label class="form-check-label" for="giatangdan">Gía tăng dần </label>
                                 </div>
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" name="flexRadioDefault" type="radio" value="giagiamdan" id="giagiamdan" />
+                                    <input class="form-check-input" name="radio-sort" type="radio" value="gia-giam-dan" id="giagiamdan" />
                                     <label class="form-check-label" for="giagiamdan"> Gía giảm dần </label>
                                 </div>
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" name="flexRadioDefault" type="radio" value="kosap" id="kosap" />
+                                    <input class="form-check-input" checked name="radio-sort" type="radio" value="gia-nothing" id="kosap" />
                                     <label class="form-check-label" for="kosap"> Không sắp xếp </label>
                                 </div>
                             </div>
 
                             <div class="text-end">
-                                <button type="submit" class="btn btn-success mt-4">Lọc sản phẩm</button>
+                                <button class="btn btn-success mt-4" id="btnFilter">Lọc sản phẩm</button>
                             </div>
                         </form>
                     </div>
@@ -190,39 +186,45 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
                                             </div>
                                             <!-- Pagination -->
                                             <div class="row mt-5">
-                                                <nav aria-label="Page navigation example">
-                                                    <ul class="pagination justify-content-center d-flex">
-                                                        <li class="page-item">
-                                                            <a
-                                                                class="page-link ${(currentPage) eq 1 ? 'disabled ' : ''}"
-                                                                href="/product?page=${currentPage-1}"
-                                                                aria-label="Previous"
-                                                            >
-                                                                <span aria-hidden="true">&laquo;</span>
-                                                            </a>
-                                                        </li>
+                                                <c:if test="${totalPages == 0}">
+                                                    <h5 class="m-0">Ko tìm thấy sản phẩm</h5>
+                                                </c:if>
 
-                                                        <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+                                                <c:if test="${totalPages > 0}">
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination justify-content-center d-flex">
                                                             <li class="page-item">
                                                                 <a
-                                                                    class="page-link ${(loop.index) eq currentPage ? 'active' : ''}"
-                                                                    href="/product?page=${loop.index}"
-                                                                    >${loop.index}</a
+                                                                    class="page-link ${1 eq currentPage ? 'disabled' : ''}"
+                                                                    href="/product?page=${currentPage-1}${queryString}"
+                                                                    aria-label="Previous"
                                                                 >
+                                                                    <span aria-hidden="true">&laquo;</span>
+                                                                </a>
                                                             </li>
-                                                        </c:forEach>
 
-                                                        <li class="page-item">
-                                                            <a
-                                                                class="page-link ${(currentPage) eq totalPages ? 'disabled ' : ''}"
-                                                                href="/product?page=${currentPage+1}"
-                                                                aria-label="Next"
-                                                            >
-                                                                <span aria-hidden="true">&raquo;</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
+                                                            <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+                                                                <li class="page-item">
+                                                                    <a
+                                                                        class="page-link ${(loop.index) eq currentPage ? 'active' : ''}"
+                                                                        href="/product?page=${loop.index}${queryString}"
+                                                                        >${loop.index}</a
+                                                                    >
+                                                                </li>
+                                                            </c:forEach>
+
+                                                            <li class="page-item">
+                                                                <a
+                                                                    class="page-link ${currentPage eq totalPages ? 'disabled ' : ''}"
+                                                                    href="/product?page=${currentPage+1}${queryString}"
+                                                                    aria-label="Next"
+                                                                >
+                                                                    <span aria-hidden="true">&raquo;</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </c:if>
                                             </div>
                                         </div>
                                     </div>

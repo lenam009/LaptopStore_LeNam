@@ -1,12 +1,14 @@
 package com.lenam.laptopshop.controller.client;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import com.lenam.laptopshop.domain.CartDetail;
 import com.lenam.laptopshop.domain.Product;
 import com.lenam.laptopshop.domain.Product_;
 import com.lenam.laptopshop.domain.User;
+import com.lenam.laptopshop.domain.dto.ProductCriterialDTO;
 import com.lenam.laptopshop.service.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -134,50 +137,47 @@ public class ItemController {
 
     @GetMapping("/product")
     public String productPage(Model model,
-            @RequestParam("page") Optional<String> pageOptional,
-            @RequestParam("name") Optional<String> nameOptional) {
+            ProductCriterialDTO productCriterialDTO, HttpServletRequest request) {
 
         int page = 1;
-        String name = "";
 
         try {
-            if (nameOptional.isPresent()) {
-                name = nameOptional.get();
-            } else {
-                // page = 1
+            if (productCriterialDTO.getPage().isPresent()) {
+                page = Integer.parseInt(productCriterialDTO.getPage().get());
             }
-        } catch (Exception ex) {
-        }
 
-        try {
-            if (pageOptional.isPresent()) {
-                page = Integer.parseInt(pageOptional.get());
-            } else {
-                // page = 1
-            }
+            // if (productCriterialDTO.minPriceOptional.isPresent()) {
+            // minPrice = Double.parseDouble(minPriceOptional.get());
+            // }
         } catch (Exception ex) {
         }
 
         Pageable pageable = PageRequest.of(page - 1, 3);
-        // Page<Product> productsPage =
-        // this.productService.getAllProductsByPageAndFilterName(pageable, name,
-        // Product_.NAME);
-        Page<Product> productsPage = this.productService.getAllProductsByPageAndFilterEqualColumn(pageable,
-                Product_.TARGET, "GAMING");
-        // Page<Product> productsPage =
-        // this.productService.getAllProductsByPageAndFilterEqualColumn(pageable,
-        // Product_.FACTORY,
-        // "DELL");
-        // Page<Product> productsPage =
-        // this.productService.getAllProductsByPageAndFilterPrice(pageable,
-        // 10000000,
-        // 20000000);
+        if (productCriterialDTO.getSort() != null && productCriterialDTO.getSort().isPresent()) {
+            String sort = productCriterialDTO.getSort().get();
+
+            if (sort.equals("gia-tang-dan")) {
+                pageable = PageRequest.of(page - 1, 3, Sort.by(Product_.PRICE).ascending());
+            } else if (sort.equals("gia-giam-dan")) {
+                pageable = PageRequest.of(page - 1, 3, Sort.by(Product_.PRICE).descending());
+            }
+        }
+
+        String qs = request.getQueryString();
+        if (qs != null && !qs.isBlank()) {
+            // Remove page
+            qs = qs.replace("page=" + page, "");
+        }
+
+        Page<Product> productsPage = this.productService.getAllProductsByPageAndFilterColumn(pageable,
+                productCriterialDTO);
 
         List<Product> productsList = productsPage.getContent();
 
         model.addAttribute("products", productsList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productsPage.getTotalPages());
+        model.addAttribute("queryString", qs);
 
         return "client/homepage/product";
     }

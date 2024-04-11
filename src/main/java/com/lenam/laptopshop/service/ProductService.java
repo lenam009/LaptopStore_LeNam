@@ -134,6 +134,10 @@ public class ProductService {
 
             // Set the appropriate min and max based on the price range string
             switch (p) {
+                case "duoi-10-trieu":
+                    min = 0.1;
+                    max = 10000000;
+                    break;
                 case "10-toi-15-trieu":
                     min = 10000000;
                     max = 15000000;
@@ -212,6 +216,56 @@ public class ProductService {
 
     public Product handleSaveProduct(Product product) {
         return this.productRepository.save(product);
+    }
+
+    public void handleAddProductToCartAPI(String email, long productId, HttpSession session, long quantity) {
+
+        User user = this.userService.getOneUserByEmail(email);
+        if (user != null) {
+            // check user đã có Cart chưa ? nếu chưa -> tạo mới
+            Cart cart = this.cartRepository.findFirstCartByUser(user);
+
+            if (cart == null) {
+                // tạo mới cart
+                Cart otherCart = new Cart();
+                otherCart.setUser(user);
+                otherCart.setSum(0);
+
+                cart = this.cartRepository.save(otherCart);
+            }
+
+            // save cart_detail
+            // tìm product by id
+
+            Optional<Product> productOptional = this.productRepository.findById(productId);
+            if (productOptional.isPresent()) {
+                Product realProduct = productOptional.get();
+
+                // check sản phẩm đã từng được thêm vào giỏ hàng trước đây chưa ?
+                CartDetail oldDetail = this.cartDetailRepository.findFirstCartDetailByCartAndProduct(cart, realProduct)
+                        .get();
+                //
+                if (oldDetail == null) {
+                    CartDetail cd = new CartDetail();
+                    cd.setCart(cart);
+                    cd.setProduct(realProduct);
+                    cd.setPrice(realProduct.getPrice());
+                    cd.setQuantity(quantity);
+                    this.cartDetailRepository.save(cd);
+
+                    // update cart (sum);
+                    int s = cart.getSum() + 1;
+                    cart.setSum(s);
+                    this.cartRepository.save(cart);
+                    session.setAttribute("sum", s);
+                } else {
+                    oldDetail.setQuantity(oldDetail.getQuantity() + quantity);
+                    this.cartDetailRepository.save(oldDetail);
+                }
+
+            }
+
+        }
     }
 
     public void handleAddProductToCart(String email, long productId, HttpSession session) {

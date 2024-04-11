@@ -90,7 +90,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
                             <div class="row g-1 mb-3" id="priceFilter">
                                 <p class="fw-bolder">Mức giá</p>
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" name="min-price" type="checkbox" value="10000000" id="duoi10" />
+                                    <input class="form-check-input" name="min-price" type="checkbox" value="duoi-10-trieu" id="duoi10" />
                                     <label class="form-check-label" for="duoi10"> Dưới 10 triệu </label>
                                 </div>
                                 <div class="col-4 form-check">
@@ -195,7 +195,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
                                                         <ul class="pagination justify-content-center d-flex">
                                                             <li class="page-item">
                                                                 <a
-                                                                    class="page-link ${1 eq currentPage ? 'disabled' : ''}"
+                                                                    class="page-link ${1 eq currentPage ? 'disabled bg-warning ' : ''}"
                                                                     href="/product?page=${currentPage-1}${queryString}"
                                                                     aria-label="Previous"
                                                                 >
@@ -215,7 +215,7 @@ uri="http://www.springframework.org/tags/form" prefix="form"%> <%@ taglib prefix
 
                                                             <li class="page-item">
                                                                 <a
-                                                                    class="page-link ${currentPage eq totalPages ? 'disabled ' : ''}"
+                                                                    class="page-link ${currentPage eq totalPages ? 'disabled bg-warning' : ''}"
                                                                     href="/product?page=${currentPage+1}${queryString}"
                                                                     aria-label="Next"
                                                                 >

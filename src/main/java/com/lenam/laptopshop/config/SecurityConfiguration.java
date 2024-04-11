@@ -22,6 +22,7 @@ import jakarta.servlet.DispatcherType;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
 
+    // Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -77,6 +78,7 @@ public class SecurityConfiguration {
                         // Only admin can access
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
+                        // All request are been authentication
                         .anyRequest().authenticated())
 
                 .sessionManagement((sessionManagement) -> sessionManagement

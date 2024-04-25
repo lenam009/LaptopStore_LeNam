@@ -34,6 +34,7 @@ public class UploadService {
             // To directory ..../webapp + /resources/images
             String rootPath = this.servletContext.getRealPath("/resources/images");
 
+            // Check folder exists ?
             File dir = new File(rootPath + File.separator + targetFolder);
             if (!dir.exists())
                 dir.mkdirs();

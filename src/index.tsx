@@ -25,43 +25,50 @@ import {
     createRoutesFromElements,
     Route,
     redirect,
+    Navigate,
 } from 'react-router-dom';
 import routes from './config/routes';
 import { defer } from 'react-router-dom';
 
+const number: Number = 1;
+
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
-            <Route path={routes.login.path} element={<LoginPage />} />
-            <Route path={routes.register.path} element={<RegisterPage />} />
+            <Route element={number === 1 ? <Navigate to={routes.home.path} /> : null}>
+                <Route path={routes.login.path} element={<LoginPage />} />
+                <Route path={routes.register.path} element={<RegisterPage />} />
+            </Route>
 
             <Route element={<Layout />}>
-                <Route
-                    path={routes.home.path}
-                    element={<HomePage />}
-                    // path={'/:slug'}
-                    // loader={async ({}) => {
-                    //     // loaders can be async functions
-                    //     const res = fetch('http://localhost:8088/api/user/getall').then(
-                    //         (res) => res.json(),
-                    //     );
-                    //     try {
-                    //         // const user = res.json();
-                    //         return defer({ res });
-                    //     } catch (error) {
-                    //         throw redirect(routes.login);
-                    //     }
-                    // }}
-                />
+                <Route element={number === 1 ? null : <Navigate to={routes.login.path} />}>
+                    <Route
+                        path={routes.home.path}
+                        element={<HomePage />}
+                        // path={'/:slug'}
+                        // loader={async ({}) => {
+                        //     // loaders can be async functions
+                        //     const res = fetch('http://localhost:8088/api/user/getall').then(
+                        //         (res) => res.json(),
+                        //     );
+                        //     try {
+                        //         // const user = res.json();
+                        //         return defer({ res });
+                        //     } catch (error) {
+                        //         throw redirect(routes.login);
+                        //     }
+                        // }}
+                    />
 
-                <Route>
-                    <Route path={routes.user.path} element={<UserPage />} />
-                    <Route path={routes.userDetail.dynamicPath} element={<UserDetail />} />
-                    <Route path={routes.userUpdate.dynamicPath} element={<UserUpdate />} />
-                    <Route path={routes.userDelete.dynamicPath} element={<UserDelete />} />
-                    <Route path={routes.createUser.path} element={<CreateUserPage />} />
-                    <Route path={routes.product.path} element={<ProductPage />} />
-                    <Route path={routes.order.path} element={<OrderPage />} />
+                    <Route>
+                        <Route path={routes.user.path} element={<UserPage />} />
+                        <Route path={routes.userDetail.dynamicPath} element={<UserDetail />} />
+                        <Route path={routes.userUpdate.dynamicPath} element={<UserUpdate />} />
+                        <Route path={routes.userDelete.dynamicPath} element={<UserDelete />} />
+                        <Route path={routes.createUser.path} element={<CreateUserPage />} />
+                        <Route path={routes.product.path} element={<ProductPage />} />
+                        <Route path={routes.order.path} element={<OrderPage />} />
+                    </Route>
                 </Route>
             </Route>
         </Route>,

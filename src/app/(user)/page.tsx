@@ -11,5 +11,9 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export default async function HomePage() {
-    return <Row>Profile</Row>;
+    return (
+        <Row>
+            <span className="text-danger ">Profile</span>
+        </Row>
+    );
 }

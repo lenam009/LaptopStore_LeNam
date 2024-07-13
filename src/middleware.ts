@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
     // const token = await getToken({ req });
     // const isAuthenticated = !!token;
 
-    const isAdmin = false;
+    const isAdmin = true;
     const isAuthentication = true;
 
     if (!isAuthentication) {

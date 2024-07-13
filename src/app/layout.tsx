@@ -8,8 +8,8 @@ import ReduxFetchApi from '@/utils/redux/WrapperReducerRedux/redux.fetchApi';
 import 'bootstrap/dist/css/bootstrap.css';
 
 export const metadata = {
-    title: 'Facebook Clone',
-    description: 'Facebook Clone',
+    title: 'Laptopshop Lê Nam',
+    description: 'Laptopshop Lê Nam',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

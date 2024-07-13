@@ -5,9 +5,12 @@ function HeaderUserPage() {
     const isLogin = true;
 
     return (
-        <div className="container-fluid fixed-top">
+        <div
+            className="container-fluid fixed-top"
+            style={{ backgroundColor: 'rgba(22,24,35,0.05)' }}
+        >
             <div className="container px-0">
-                <nav className="navbar navbar-light bg-white navbar-expand-xl">
+                <nav className="navbar navbar-light  navbar-expand-xl">
                     <a href="/" className="navbar-brand">
                         <h1 className="text-primary display-6">Lê Nam</h1>
                     </a>
@@ -20,7 +23,7 @@ function HeaderUserPage() {
                         <span className="fa fa-bars text-primary"></span>
                     </button>
                     <div
-                        className="collapse navbar-collapse bg-white justify-content-between ms-5"
+                        className="collapse navbar-collapse  justify-content-between ms-5"
                         id="navbarCollapse"
                     >
                         <div className="navbar-nav">

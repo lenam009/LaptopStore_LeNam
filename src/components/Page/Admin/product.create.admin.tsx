@@ -14,7 +14,7 @@ function CreateProduct({ isOpen, setOpen }: IProps) {
             aria-describedby="modal-modal-description"
         >
             <main>
-                <div className="container px-4">
+                <div className="container px-4 bg-white">
                     <h1 className="mt-4"></h1>
 
                     {/* <!-- Content --> */}
@@ -172,6 +172,13 @@ function CreateProduct({ isOpen, setOpen }: IProps) {
 
                                 <button type="submit" className="btn btn-primary">
                                     Create
+                                </button>
+                                <button
+                                    type="submit"
+                                    onClick={() => setOpen(false)}
+                                    className="btn btn-danger"
+                                >
+                                    Close
                                 </button>
                             </form>
                         </div>

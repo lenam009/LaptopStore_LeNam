@@ -1,169 +1,183 @@
 import { Modal } from '@mui/material';
 
-function CreateProduct() {
+interface IProps {
+    isOpen: boolean;
+    setOpen: (value: boolean) => void;
+}
+
+function CreateProduct({ isOpen, setOpen }: IProps) {
     return (
         <Modal
-            open={true}
-            // onClose={() => setOpen(false)}
+            open={isOpen}
+            onClose={() => setOpen(false)}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
             <main>
-                    <div className="container-fluid px-4">
-                        <h1 className="mt-4"></h1>
+                <div className="container px-4">
+                    <h1 className="mt-4"></h1>
 
-                        {/* <!-- Content --> */}
-                        <div className="row">
-                            <div className="col-md-6 col-12 mx-auto">
-                                <h1 className="mt-4">Create Product</h1>
-                                <form
-                                    method="post"
-                                    action="/admin/product/create"
-                                    modelAttribute="newProduct"
-                                >
-                                    {/* <!-- Email --> */}
-                                    <div className="mb-3 row">
-                                        <div className="col">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Name:</label>
-
-                                            <input
-                                                type="number"
-                                                className="form-control ${not empty priceError ? 'is-invalid' : ''}"
-                                                id="exampleInputPassword1"
-                                            />
-
-                                           
-                                        </div>
-                                        {/* <!-- Password --> */}
-                                        <div className="col">
-                                            <label htmlFor="exampleInputPassword1" className="form-label"
-                                                >Price:</label>
-
-                                          
-
-                                            <input
-                                                type="number"
-                                                className="form-control ${not empty priceError ? 'is-invalid' : ''}"
-                                                id="exampleInputPassword1"
-                                            />
-
-                                            ${priceError}
-                                        </div>
-                                    </div>
-                                    <!-- Phone -->
-                                    <div className="mb-3">
-                                        <label for="exampleInputTel" className="form-label"
-                                            >Detail description:</label
+                    {/* <!-- Content --> */}
+                    <div className="row">
+                        <div className="col-md-6 col-12 mx-auto">
+                            <h1 className="mt-4">Create Product</h1>
+                            <form>
+                                {/* <!-- Email --> */}
+                                <div className="mb-3 row">
+                                    <div className="col">
+                                        <label
+                                            htmlFor="exampleInputEmail1"
+                                            className="form-label"
                                         >
-                                        <form:textarea
-                                            rows="3"
-                                            type="text"
-                                            className="form-control"
-                                            id="exampleInputTel"
-                                            path="detailDesc"
+                                            Name:
+                                        </label>
+
+                                        <input
+                                            type="number"
+                                            className="form-control ${not empty priceError ? 'is-invalid' : ''}"
+                                            id="exampleInputPassword1"
                                         />
                                     </div>
+                                    {/* <!-- Password --> */}
+                                    <div className="col">
+                                        <label
+                                            htmlFor="exampleInputPassword1"
+                                            className="form-label"
+                                        >
+                                            Price:
+                                        </label>
 
-                                    <!-- Full name -->
-                                    <div className="row mb-3">
-                                        <div className="col">
-                                            <label for="exampleInputFullName" className="form-label"
-                                                >Short description:</label
-                                            >
-                                            <form:input
-                                                type="text"
+                                        <input
+                                            type="number"
+                                            className="form-control ${not empty priceError ? 'is-invalid' : ''}"
+                                            id="exampleInputPassword1"
+                                        />
+                                    </div>
+                                </div>
+                                {/* <!-- Phone --> */}
+                                <div className="mb-3">
+                                    <label
+                                        htmlFor="exampleInputTel"
+                                        className="form-label"
+                                    >
+                                        Detail description:
+                                    </label>
+
+                                    <textarea
+                                        className="form-control"
+                                        id="exampleInputTel"
+                                    >
+                                        At w3schools.com you will learn how to make a
+                                        website. They offer free tutorials in all web
+                                        development technologies.
+                                    </textarea>
+                                </div>
+
+                                {/* <!-- Full name --> */}
+                                <div className="row mb-3">
+                                    <div className="col">
+                                        <label
+                                            htmlFor="exampleInputFullName"
+                                            className="form-label"
+                                        >
+                                            Short description:
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="exampleInputFullName"
+                                        />
+                                    </div>
+                                    <div className="col">
+                                        <label
+                                            htmlFor="exampleInputAddress"
+                                            className="form-label"
+                                        >
+                                            {' '}
+                                            Quantity{' '}
+                                        </label>
+
+                                        <input
+                                            className="form-control ${not empty quantityError ? 'is-invalid' : ''}"
+                                            id="exampleInputAddress"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="row mb-3">
+                                    <div className="col">
+                                        <label
+                                            htmlFor="exampleInputFullName"
+                                            className="form-label"
+                                        >
+                                            Factory:
+                                        </label>
+                                        <select
+                                            className="form-select"
+                                            aria-label="Default select example"
+                                        >
+                                            <option value="Apple">Apple</option>
+                                            <option value="Asus">Asus</option>
+                                            <option value="Lenovo">Lenovo</option>
+                                            <option value="Dell">Dell</option>
+                                            <option value="Gigabyte">Gigabyte</option>
+                                        </select>
+                                    </div>
+                                    <div className="col">
+                                        <label
+                                            htmlFor="exampleInputFullName"
+                                            className="form-label"
+                                        >
+                                            Target:
+                                        </label>
+                                        <select
+                                            className="form-select"
+                                            aria-label="Default select example"
+                                        >
+                                            <option value="Student - office">
+                                                Student - office
+                                            </option>
+                                            <option value="Gaming">Gaming</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="mb-3 row">
+                                    {/* <!-- Upload --> */}
+                                    <div className="col-5">
+                                        <label
+                                            htmlFor="avatarFile"
+                                            className="form-label"
+                                        >
+                                            Image:
+                                        </label>
+                                        <div className="input-group mb-3">
+                                            <input
+                                                type="file"
                                                 className="form-control"
-                                                id="exampleInputFullName"
-                                                path="shortDesc"
-                                            />
-                                        </div>
-                                        <div className="col">
-                                            <label for="exampleInputAddress" className="form-label"
-                                                >Quantity:</label
-                                            >
-
-                                            <c:set var="quantityError">
-                                                <form:errors
-                                                    path="quantity"
-                                                    cssClass="invalid-feedback"
-                                                />
-                                            </c:set>
-
-                                            <form:input
-                                                className="form-control ${not empty quantityError ? 'is-invalid' : ''}"
-                                                id="exampleInputAddress"
-                                                path="quantity"
-                                            />
-                                            ${quantityError}
-                                        </div>
-                                    </div>
-
-                                    <div className="row mb-3">
-                                        <div className="col">
-                                            <label for="exampleInputFullName" className="form-label"
-                                                >Factory:</label
-                                            >
-                                            <form:select
-                                                className="form-select"
-                                                aria-label="Default select example"
-                                                path="factory"
-                                            >
-                                                <form:option value="Apple">Apple</form:option>
-                                                <form:option value="Asus">Asus</form:option>
-                                                <form:option value="Lenovo">Lenovo</form:option>
-                                                <form:option value="Dell">Dell</form:option>
-                                                <form:option value="Gigabyte">Gigabyte</form:option>
-                                            </form:select>
-                                        </div>
-                                        <div className="col">
-                                            <label for="exampleInputFullName" className="form-label"
-                                                >Target:</label
-                                            >
-                                            <form:select
-                                                className="form-select"
-                                                aria-label="Default select example"
-                                                path="target"
-                                            >
-                                                <form:option value="Student - office"
-                                                    >Student - office</form:option
-                                                >
-                                                <form:option value="Gaming">Gaming</form:option>
-                                            </form:select>
-                                        </div>
-                                    </div>
-
-                                    <div className="mb-3 row">
-                                        <!-- Upload -->
-                                        <div className="col-5">
-                                            <label for="avatarFile" className="form-label"
-                                                >Image:</label
-                                            >
-                                            <div className="input-group mb-3">
-                                                <input
-                                                    type="file"
-                                                    className="form-control"
-                                                    id="avatarFile"
-                                                    name="lenamFile"
-                                                    accept=".png, .jpg, .jpeg"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="col-2">
-                                            <img
-                                                width="100%"
-                                                style="height: 69px; display: none"
-                                                id="avatarPreview"
+                                                id="avatarFile"
+                                                name="lenamFile"
+                                                accept=".png, .jpg, .jpeg"
                                             />
                                         </div>
                                     </div>
+                                    <div className="col-2">
+                                        <img
+                                            width="100%"
+                                            style={{ height: '69px', display: 'none' }}
+                                            id="avatarPreview"
+                                        />
+                                    </div>
+                                </div>
 
-                                    <button type="submit" className="btn btn-primary">Create</button>
-                                </form:form>
-                            </div>
+                                <button type="submit" className="btn btn-primary">
+                                    Create
+                                </button>
+                            </form>
                         </div>
                     </div>
-                </main>
-
+                </div>
+            </main>
         </Modal>
     );
 }

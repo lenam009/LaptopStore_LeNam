@@ -71,9 +71,9 @@ export default function AuthSignin() {
             <Col span={5}></Col>
             <Col className={styles['col-facebook']} span={6}>
                 <Flex justify="center" vertical rootClassName={styles['flex']}>
-                    <h1 className={styles['facebook']}>facebook</h1>
+                    <h1 className={styles['facebook']}>Lê Nam Store</h1>
                     <span className={styles['desc']}>
-                        Kết nối bạn bè và mọi người trên thế giới với facebook
+                        Kết nối bạn bè và mọi người trên thế giới với Lê Nam Store
                     </span>
                 </Flex>
             </Col>

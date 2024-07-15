@@ -1,6 +1,15 @@
+'use client';
+
+import CreateProduct from './product.create.admin';
+import { useState } from 'react';
+
 function ProductPage() {
+    const [isOpen, setOpen] = useState<boolean>(false);
+
     return (
         <main>
+            <CreateProduct isOpen={isOpen} setOpen={setOpen} />
+
             <div className="container-fluid px-4">
                 <h1 className="mt-4">Manage Products</h1>
                 <ol className="breadcrumb mb-4">
@@ -16,12 +25,12 @@ function ProductPage() {
                     <div className="col-12 mx-auto">
                         <div className="d-flex justify-content-between">
                             <h2>Table Product</h2>
-                            <a
-                                href="/admin/product/create"
+                            <button
+                                onClick={() => setOpen((prev) => true)}
                                 className="btn btn-primary d-flex align-items-center"
                             >
                                 Create a product
-                            </a>
+                            </button>
                         </div>
                         <hr />
 

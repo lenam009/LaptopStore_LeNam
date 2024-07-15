@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import ProductPage from '@/components/Page/Admin/prduct.admin';
+import ProductPage from '@/components/Page/Admin/product.admin';
 
 function ProductAdminPage() {
     return (

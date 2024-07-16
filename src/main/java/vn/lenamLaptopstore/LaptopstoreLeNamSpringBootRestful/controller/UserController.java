@@ -5,8 +5,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.User;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Response.ResCreateUserDTO;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.service.UserService;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.annotation.ApiMessage;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -21,11 +25,14 @@ public class UserController {
     }
 
     @PostMapping("")
-    public User postMethodName(@Valid @RequestBody User postUser) {
+    @ApiMessage(value = "Create User")
+    public ResponseEntity<ResCreateUserDTO> createUser(@Valid @RequestBody User postUser) {
 
         User user = this.userService.handleCreateUser(postUser);
 
-        return user;
+        ResCreateUserDTO resCreateUserDTO = this.userService.handleConvertUserToResCreateUserDTO(user);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(resCreateUserDTO);
     }
 
 }

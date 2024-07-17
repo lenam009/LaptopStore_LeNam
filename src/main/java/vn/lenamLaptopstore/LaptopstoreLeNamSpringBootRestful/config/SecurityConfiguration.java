@@ -1,5 +1,7 @@
 package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.config;
 
+import java.util.Optional;
+
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -10,9 +12,16 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
@@ -36,7 +45,13 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+            CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+
+        String[] whiteList = {
+                "/", "/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/register", "/api/v1/email/**",
+                "/storage/**"
+        };
 
         http
                 // Security spring
@@ -45,9 +60,19 @@ public class SecurityConfiguration {
 
                 .authorizeHttpRequests(
                         authz -> authz
-                                .anyRequest().permitAll()
+                                .requestMatchers(whiteList).permitAll()
+                                .anyRequest().authenticated()
 
                 )
+
+                // Each API must has Token (Exclude: permitAll above)
+                // Sử dụng BearerTokenAuthenticationFilter (filter sẽ tự động extract - lấy
+                // token từ header(chưa decode) của request gửi lên server )
+                // BearerTokenAuthenticationFilter sẽ auto set data token vào Security Context
+                .oauth2ResourceServer((oauth2) -> oauth2
+                        .jwt(Customizer.withDefaults())
+                        // Handle exception when token(request attach token) invalid or blank
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
 
                 .formLogin(f -> f.disable())
 
@@ -58,8 +83,9 @@ public class SecurityConfiguration {
 
     }
 
-    // Insert info user from extract token into SecurityContextHolder Authentication
-    // (Equal req.user into Nodejs express)
+    // Insert authorization from extract token into SecurityContextHolder
+    // req.user will auto is extracted from BearerTokenAuthenticationFilter (below
+    // not relevance)
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
@@ -78,10 +104,28 @@ public class SecurityConfiguration {
     }
 
     // Get key
-    // End Token Encode.......
+    // End Encoder.......
     private SecretKey getSecretKey() {
         byte[] keyBytes = Base64.from(jwtKey).decode();
         return new SecretKeySpec(keyBytes, 0, keyBytes.length, SecurityUtil.JWT_ALGORITHM.getName());
+    }
+
+    // Token Decode.......
+    @Bean
+    public JwtDecoder jwtDecoder() {
+
+        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(
+                getSecretKey()).macAlgorithm(SecurityUtil.JWT_ALGORITHM).build();
+
+        // Token is been Filter return
+        return token -> {
+            try {
+                return jwtDecoder.decode(token);
+            } catch (Exception e) {
+                System.out.println(">>> JWT error: " + e.getMessage());
+                throw e;
+            }
+        };
     }
 
 }

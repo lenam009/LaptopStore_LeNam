@@ -1,5 +1,7 @@
 package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.User;
@@ -17,6 +19,10 @@ public class UserService {
 
     public User handleCreateUser(User postUser) {
         return this.userRepository.save(postUser);
+    }
+
+    public Optional<User> getUserByEmail(String email) {
+        return this.userRepository.findByEmail(email);
     }
 
     public ResCreateUserDTO handleConvertUserToResCreateUserDTO(User user) {

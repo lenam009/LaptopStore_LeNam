@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -40,6 +42,18 @@ public class GlobalException {
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
         res.setError("Invalid request content");
         res.setMessage(errors.size() > 1 ? errors : errors.get(0));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    }
+
+    @ExceptionHandler(value = { BadCredentialsException.class, UsernameNotFoundException.class })
+    // Parameter is Exception ex because don't know will run into what exception
+    public ResponseEntity<Object> handleMultiException(Exception ex) {
+
+        RestResponse<Object> res = new RestResponse<Object>();
+        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        res.setError(ex.getMessage());
+        res.setMessage("Info login not valid...");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }

@@ -49,7 +49,8 @@ public class SecurityConfiguration {
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
 
         String[] whiteList = {
-                "/", "/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/register", "/api/v1/email/**",
+                "/", "/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/register",
+                "/api/v1/email/**",
                 "/storage/**"
         };
 
@@ -74,7 +75,7 @@ public class SecurityConfiguration {
                         // Handle exception when token(request attach token) invalid or blank
                         .authenticationEntryPoint(customAuthenticationEntryPoint))
 
-                .formLogin(f -> f.disable())
+                .formLogin(x -> x.disable())
 
                 // Use STATELESS
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

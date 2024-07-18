@@ -40,8 +40,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                 .orElse(authException.getMessage());
 
         RestResponse<Object> res = new RestResponse<Object>();
-        res.setStatusCode(HttpStatus.UNAUTHORIZED.value());
-        res.setError(authException.getMessage());
+        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        res.setError(errorMessage);
         res.setMessage("Token không hợp lệ (hết hạn, không đúng định dạng, hoặc không truyền JWT ở header)...");
 
         mapper.writeValue(response.getWriter(), res);

@@ -22,7 +22,7 @@ public class UserService {
     }
 
     public Optional<User> getUserByEmail(String email) {
-        return this.userRepository.findByEmail(email);
+        return this.userRepository.findFirstUserByEmail(email);
     }
 
     public ResCreateUserDTO handleConvertUserToResCreateUserDTO(User user) {

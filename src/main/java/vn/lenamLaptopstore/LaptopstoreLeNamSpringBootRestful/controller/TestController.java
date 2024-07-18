@@ -2,6 +2,7 @@ package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.controller;
 
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,9 +14,11 @@ public class TestController {
     @GetMapping("/")
     public String getHello() {
 
-        Optional<String> email = SecurityUtil.getCurrentUserLogin();
+        throw new UsernameNotFoundException("Username not valid");
 
-        return email.get();
+        // Optional<String> email = SecurityUtil.getCurrentUserLogin();
+
+        // return "hello";
     }
 
 }

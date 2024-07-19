@@ -1,9 +1,5 @@
 package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -15,6 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -37,7 +34,7 @@ public class Product {
     private long id;
 
     @NotNull
-    @NotEmpty(message = "Tên sản phẩm không được trống")
+    @NotBlank(message = "Tên sản phẩm không được trống")
     private String name;
 
     @NotNull

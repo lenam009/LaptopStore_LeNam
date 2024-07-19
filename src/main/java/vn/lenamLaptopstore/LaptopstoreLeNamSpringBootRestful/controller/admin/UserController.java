@@ -1,4 +1,4 @@
-package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.controller;
+package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.controller.admin;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

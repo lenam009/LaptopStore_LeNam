@@ -14,11 +14,11 @@ public class TestController {
     @GetMapping("/")
     public String getHello() {
 
-        throw new UsernameNotFoundException("Username not valid");
+        // throw new UsernameNotFoundException("Username not valid");
 
         // Optional<String> email = SecurityUtil.getCurrentUserLogin();
 
-        // return "hello";
+        return "hello";
     }
 
 }

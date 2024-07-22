@@ -8,7 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpSession;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Cart;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.CartDetail;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Product;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.User;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Response.ResultPaginationDTO;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.CartDetailRepository;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.CartRepository;
@@ -88,6 +92,58 @@ public class ProductService {
         }
 
         this.productRepository.deleteById(id);
+    }
+
+    public void handleAddProductToCart(String email, long productId) {
+        // Check - Does current user has cart?
+        Optional<User> userOptional = this.userService.getUserByEmail(email);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            Optional<Cart> cartOptional = this.cartRepository.findFirstCartByUser(user);
+            Cart cart = cartOptional.isPresent() ? cartOptional.get() : null;
+
+            if (cart == null) {
+                // Cart
+                Cart newCart = new Cart();
+                newCart.setUser(user);
+                newCart.setSum(0);
+                // Create new Cart
+                cart = this.cartRepository.save(newCart);
+            }
+
+            // Cart detail
+            Optional<Product> productOptional = this.productRepository.findById(productId);
+            if (productOptional.isPresent()) {
+                Product realProduct = productOptional.get();
+
+                // Check - Does cart of current user has this product?
+                Optional<CartDetail> cartDetail = this.cartDetailRepository
+                        .findFirstCartDetailByCartAndProduct(cart, realProduct);
+
+                if (cartDetail.isPresent()) {
+                    CartDetail realCartDetail = cartDetail.get();
+                    realCartDetail.setQuantity(realCartDetail.getQuantity() + 1);
+                    // Update quantity cart detail
+                    this.cartDetailRepository.save(realCartDetail);
+                } else {
+                    CartDetail newCartDetail = new CartDetail();
+                    newCartDetail.setCart(cart);
+                    newCartDetail.setProduct(realProduct);
+                    newCartDetail.setQuantity(1);
+                    newCartDetail.setPrice(realProduct.getPrice());
+                    // Create new cart detail
+                    this.cartDetailRepository.save(newCartDetail);
+
+                    // Increase sum of Cart by 1
+                    int sum = cart.getSum() + 1;
+                    cart.setSum(sum);
+                    this.cartRepository.save(cart);
+                }
+
+            }
+        }
+        // End check...
     }
 
 }

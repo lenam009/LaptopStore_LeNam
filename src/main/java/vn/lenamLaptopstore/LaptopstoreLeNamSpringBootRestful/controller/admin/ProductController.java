@@ -43,10 +43,11 @@ public class ProductController {
         return ResponseEntity.ok().body(resultPaginationDTO);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> handleGetProductById(@PathVariable("id") long id) throws InvalidException {
+    @GetMapping("/{productId}")
+    public ResponseEntity<Product> handleGetProductById(@PathVariable("productId") long productId)
+            throws InvalidException {
 
-        Product product = this.productService.getProductById(id);
+        Product product = this.productService.getProductById(productId);
 
         return ResponseEntity.ok().body(product);
     }

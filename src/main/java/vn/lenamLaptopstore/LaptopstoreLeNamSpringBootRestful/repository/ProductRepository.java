@@ -11,4 +11,6 @@ import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
+    Optional<Product> findFirstProductById(long id);
+
 }

@@ -6,8 +6,13 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +28,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.SecurityUtil;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.constant.StatusOrderEnum;
 
 @Entity
 @Table(name = "orders")
@@ -40,9 +46,10 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties(value = "password")
     private User user;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
 
     private String receiverName;
@@ -50,7 +57,8 @@ public class Order {
 
     private String receiverPhone;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private StatusOrderEnum status;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant createdAt;

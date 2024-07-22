@@ -2,6 +2,9 @@ package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
@@ -47,6 +50,7 @@ public class OrderDetail {
     @ManyToOne
     @MapsId("orderID")
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
 
     @ManyToOne

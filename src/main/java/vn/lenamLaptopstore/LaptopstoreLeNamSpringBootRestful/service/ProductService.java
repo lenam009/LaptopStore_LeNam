@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Product;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Response.ResultPaginationDTO;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.CartDetailRepository;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.CartRepository;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.OrderDetailRepository;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.OrderRepository;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.ProductRepository;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.exception.InvalidException;
 
@@ -17,9 +21,21 @@ import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.exception.Inva
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
+    private final CartDetailRepository cartDetailRepository;
+    private final UserService userService;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, CartRepository cartRepository,
+            CartDetailRepository cartDetailRepository, UserService userService, OrderRepository orderRepository,
+            OrderDetailRepository orderDetailRepository) {
         this.productRepository = productRepository;
+        this.cartRepository = cartRepository;
+        this.cartDetailRepository = cartDetailRepository;
+        this.userService = userService;
+        this.orderRepository = orderRepository;
+        this.orderDetailRepository = orderDetailRepository;
     }
 
     public Page<Product> getProductsByPageAndFilter(Specification<Product> specification,

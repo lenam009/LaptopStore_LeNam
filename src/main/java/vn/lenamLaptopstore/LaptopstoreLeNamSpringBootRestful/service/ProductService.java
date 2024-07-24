@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpSession;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Cart;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.CartDetail;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Order;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.OrderDetail;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Product;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.User;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Response.ResultPaginationDTO;
@@ -19,6 +21,8 @@ import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.CartRepo
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.OrderDetailRepository;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.OrderRepository;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.ProductRepository;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.key_embeddable.OrderDetailKey;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.constant.StatusOrderEnum;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.exception.InvalidException;
 
 @Service
@@ -94,14 +98,15 @@ public class ProductService {
         this.productRepository.deleteById(id);
     }
 
-    public void handleAddProductToCart(String email, long productId) {
+    public Cart handleAddProductToCart(String email, long productId) throws InvalidException {
         // Check - Does current user has cart?
         Optional<User> userOptional = this.userService.getUserByEmail(email);
+        Cart cart = null;
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             Optional<Cart> cartOptional = this.cartRepository.findFirstCartByUser(user);
-            Cart cart = cartOptional.isPresent() ? cartOptional.get() : null;
+            cart = cartOptional.isPresent() ? cartOptional.get() : null;
 
             if (cart == null) {
                 // Cart
@@ -141,9 +146,75 @@ public class ProductService {
                     this.cartRepository.save(cart);
                 }
 
+                cart.setTotalPrice(cart.getTotalPrice() + realProduct.getPrice());
+                this.cartRepository.save(cart);
+
             }
+        } else {
+            throw new InvalidException("Id user invalid...");
         }
+
+        return cart;
         // End check...
+    }
+
+    public Order handlePlaceOrder(User user, Order orderPost) throws InvalidException {
+
+        Order order = null;
+
+        // create order
+
+        // create orderDetail
+
+        // step 1: get cart by user
+        Optional<Cart> cartOptional = this.cartRepository.findFirstCartByUser(user);
+        if (cartOptional.isPresent()) {
+            Cart cart = cartOptional.get();
+            List<CartDetail> cartDetails = cart.getCartDetails();
+
+            order = new Order();
+            order.setUser(user);
+            order.setReceiverName(orderPost.getReceiverName());
+            order.setReceiverAddress(orderPost.getReceiverAddress());
+            order.setReceiverPhone(orderPost.getReceiverPhone());
+            order.setStatus(StatusOrderEnum.PENDING);
+            order.setTotalPrice(cart.getTotalPrice());
+
+            order = this.orderRepository.save(order);
+
+            if (cartDetails != null) {
+                for (CartDetail cd : cartDetails) {
+                    OrderDetail orderDetail = new OrderDetail();
+                    OrderDetailKey orderDetailKey = new OrderDetailKey(order.getId(), cd.getProduct().getId());
+
+                    orderDetail.setId(orderDetailKey);
+                    orderDetail.setPrice(cd.getPrice());
+                    orderDetail.setQuantity(cd.getQuantity());
+                    orderDetail.setOrder(order);
+                    orderDetail.setProduct(cd.getProduct());
+
+                    OrderDetail newOrderDetail = this.orderDetailRepository.save(orderDetail);
+                }
+
+                // step 2: delete cart_detail and cart
+                for (CartDetail cd : cartDetails) {
+                    this.cartDetailRepository.deleteById(cd.getId());
+                }
+
+                this.cartRepository.deleteById(cart.getId());
+
+                // step 3 : update session
+            }
+        } else {
+            throw new InvalidException("User don't have cart...");
+        }
+
+        return order;
+
+    }
+
+    public long getCountProduct() {
+        return this.productRepository.count();
     }
 
 }

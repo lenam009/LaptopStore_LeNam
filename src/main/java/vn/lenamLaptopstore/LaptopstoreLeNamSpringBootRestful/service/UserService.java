@@ -37,4 +37,8 @@ public class UserService {
         return resCreateUserDTO;
     }
 
+    public long getCountUser() {
+        return this.userRepository.count();
+    }
+
 }

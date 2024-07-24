@@ -40,4 +40,6 @@ public class Cart {
     @Min(value = 0)
     private int sum;
 
+    private double totalPrice;
+
 }

@@ -1,20 +1,19 @@
 package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Response;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.CartDetail;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResCheckoutDTO {
+public class ResDashboardDTO {
 
-    private List<CartDetail> cartDetails;
+    private long countUser;
 
-    private double totalPrice;
+    private long countProduct;
+
+    private long countOrder;
 }

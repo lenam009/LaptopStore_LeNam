@@ -38,9 +38,20 @@ public class CartService {
         return cartOptional.get();
     }
 
-    public void deleteCartDetail(long cartDetailId) {
-        CartDetail cartDetail = this.cartDetailRepository.findById(cartDetailId).get();
+    public void deleteCartDetail(long cartDetailId) throws InvalidException {
+        Optional<CartDetail> cartDetailOptional = this.cartDetailRepository.findById(cartDetailId);
+
+        if (!cartDetailOptional.isPresent()) {
+            throw new InvalidException("Id cart detail invalid...");
+        }
+
+        CartDetail cartDetail = cartDetailOptional.get();
+
         Cart cart = cartDetail.getCart();
+
+        // Update total price cart
+        cart.setTotalPrice(cart.getTotalPrice() - (cartDetail.getPrice() * cartDetail.getQuantity()));
+        this.cartRepository.save(cart);
 
         this.cartDetailRepository.delete(cartDetail);
 

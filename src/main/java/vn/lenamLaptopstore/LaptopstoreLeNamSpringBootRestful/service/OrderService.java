@@ -53,4 +53,8 @@ public class OrderService {
         return resultPaginationDTO;
     }
 
+    public long getCountOrder() {
+        return this.orderRepository.count();
+    }
+
 }

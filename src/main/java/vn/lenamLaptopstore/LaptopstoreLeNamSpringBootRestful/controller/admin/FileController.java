@@ -53,7 +53,7 @@ public class FileController {
             throw new InvalidException("Extension file not valid...");
         }
 
-        // create a directory if folder not existsgetResource
+        // create a directory if folder not exists getResource
         this.fileService.createDirectory(baseURI);
         this.fileService.createDirectory(baseURI + folder);
 

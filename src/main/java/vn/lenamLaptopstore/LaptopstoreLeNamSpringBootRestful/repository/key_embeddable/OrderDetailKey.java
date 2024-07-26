@@ -1,4 +1,4 @@
-package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain;
+package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.key_embeddable;
 
 import java.io.Serializable;
 
@@ -18,33 +18,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.key_embeddable.OrderDetailKey;
 
-@Entity
-@Table(name = "order_detail")
+@Embeddable
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OrderDetail {
+public class OrderDetailKey implements Serializable {
 
-    @EmbeddedId
-    private OrderDetailKey id;
+    @Column(name = "order_id")
+    private Long orderID;
 
-    @ManyToOne
-    @MapsId("orderID")
-    @JoinColumn(name = "order_id")
-    @JsonIgnore
-    private Order order;
-
-    @ManyToOne
-    @MapsId("productID")
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    private long quantity;
-
-    private double price;
+    @Column(name = "product_id")
+    private Long productID;
 
 }

@@ -18,6 +18,7 @@ import { useAppDispatch } from '@/utils/redux/hook';
 import { setUser } from '@/utils/redux/userSlice';
 
 import routes from '@/config/routes/routes';
+import { sendRequest } from '@/utils/api';
 
 export default function AuthSignin() {
     const { data: session } = useSession();
@@ -38,6 +39,7 @@ export default function AuthSignin() {
             password: values.password,
             redirect: false,
         });
+
         setIsLoading(false);
 
         if (result?.ok) {

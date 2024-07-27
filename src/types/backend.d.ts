@@ -40,6 +40,7 @@ declare global {
         fullName: string;
         email: string;
         role: IRole;
+        access_token?: string;
     }
 
     interface IProduct {

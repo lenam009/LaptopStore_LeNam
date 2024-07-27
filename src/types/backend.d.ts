@@ -21,7 +21,7 @@ declare global {
 
     interface IModelPaginate<T> {
         meta: {
-            current: number;
+            page: number;
             pageSize: number;
             pages: number;
             total: number;
@@ -29,32 +29,77 @@ declare global {
         result: T[];
     }
 
-    interface IUser {
-        _id: string;
-        username: string;
-        email: string;
-        profilePicture: string;
-        coverPicture: string;
-        followers: string[];
-        followings: string[];
-        isAdmin: boolean;
-        desc: string;
-        city: string;
-        from: string;
-        relationship?: number;
-        createdAt: string;
-        updatedAt: string;
-        __v?: any;
+    enum EIdRole {
+        ADMIN = 'ADMIN',
+        USER = 'USER',
     }
 
-    interface IPost {
-        _id?: string;
-        userId: string;
-        desc: string;
-        img?: string;
-        likes: string[];
+    interface IRole {
+        id: EIdRole;
+        private: string;
+        private: string;
+    }
+
+    interface IUser {
+        id: string;
+        fullName: string;
+        email: string;
+    }
+
+    interface IProduct {
+        id: string;
+        name: string;
+        price: string;
+        image: string;
+        detailDesc: string;
+        shortDesc: string;
+        quantity: number;
+        sold: string;
+        factory: string;
+        target: string;
+    }
+
+    interface ICart {
+        id: string;
+        product: IProduct;
+        cartDetails: ICartDetail[];
+        sum: number;
+        totalPrice: number;
+    }
+
+    interface ICartDetail {
+        id: string;
+        product: IProduct;
+        quantity: number;
+        price: number;
+    }
+
+    enum EStatusOrder {
+        PENDING = 'PENDING',
+        MOVING = 'MOVING',
+        SUCCESS = 'SUCCESS',
+    }
+
+    interface IOrder {
+        id: string;
+        product?: IProduct;
+        orderDetails?: IOrderDetail[];
+        totalPrice: number;
+        user?: IUser;
+        receiverName: string;
+        receiverAddress: string;
+        receiverPhone: string;
+        status: EStatusOrder;
         createdAt: string;
         updatedAt: string;
-        video?: string;
+        createdBy: string;
+        updatedBy: string;
+    }
+
+    interface IOrderDetail {
+        id: string;
+        product: IProduct;
+        quantity: number;
+        price: number;
     }
 }

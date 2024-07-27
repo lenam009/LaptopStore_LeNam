@@ -86,32 +86,31 @@ import { handleSignInAction } from '@/utils/actions/actions';
 //             const dsa = profile;
 
 //             // GITHUB, GOOGLE
-//             if (trigger === 'signIn' && account?.provider !== 'credentials') {
-//                 const res = await sendRequest<IBackendRes<JWT>>({
-//                     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/social-media`,
-//                     method: 'POST',
+//             // if (trigger === 'signIn' && account?.provider !== 'credentials') {
+//             //     const res = await sendRequest<IBackendRes<JWT>>({
+//             //         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/social-media`,
+//             //         method: 'POST',
 
-//                     body: {
-//                         type: account?.provider.toLocaleUpperCase(),
-//                         username: user.email,
-//                     },
-//                 });
+//             //         body: {
+//             //             type: account?.provider.toLocaleUpperCase(),
+//             //             username: user.email,
+//             //         },
+//             //     });
 
-//                 if (res.data) {
-//                     token.access_token = res.data.access_token;
-//                     token.refresh_token = res.data.refresh_token;
-//                     token.user = res.data.user;
-//                 }
-//             }
+//             //     if (res.data) {
+//             //         token.access_token = res.data.access_token;
+//             //         token.refresh_token = res.data.refresh_token;
+//             //         token.user = res.data.user;
+//             //     }
+//             // }
 
 //             //CREDENTIAL
 //             if (trigger === 'signIn' && account?.provider === 'credentials') {
 //                 if (token) {
 //                     token.access_token = user.access_token;
-//                     token.refresh_token = user.refresh_token;
-//                     const { _id, email } = user.user;
+//                     const { id, email } = user.user;
 //                     token.user = {
-//                         _id,
+//                         id,
 //                         email,
 //                     };
 //                 }
@@ -122,7 +121,6 @@ import { handleSignInAction } from '@/utils/actions/actions';
 //         session({ session, token, user }) {
 //             if (token) {
 //                 session.access_token = token.access_token;
-//                 session.refresh_token = token.refresh_token;
 //                 session.user = token.user;
 
 //                 // session.access_expire = token.access_expire;

@@ -29,21 +29,17 @@ declare global {
         result: T[];
     }
 
-    enum EIdRole {
-        ADMIN = 'ADMIN',
-        USER = 'USER',
-    }
-
     interface IRole {
-        id: EIdRole;
-        private: string;
-        private: string;
+        id: 'USER|ADMIN';
+        name: string;
+        description: string;
     }
 
     interface IUser {
         id: string;
         fullName: string;
         email: string;
+        role: IRole;
     }
 
     interface IProduct {
@@ -74,12 +70,6 @@ declare global {
         price: number;
     }
 
-    enum EStatusOrder {
-        PENDING = 'PENDING',
-        MOVING = 'MOVING',
-        SUCCESS = 'SUCCESS',
-    }
-
     interface IOrder {
         id: string;
         product?: IProduct;
@@ -89,7 +79,7 @@ declare global {
         receiverName: string;
         receiverAddress: string;
         receiverPhone: string;
-        status: EStatusOrder;
+        status: 'PENDING|STATUS|SUCCESS';
         createdAt: string;
         updatedAt: string;
         createdBy: string;

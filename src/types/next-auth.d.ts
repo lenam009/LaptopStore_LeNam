@@ -16,6 +16,8 @@ declare module 'next-auth' {
         user: {
             id: string;
             email: string;
+            fullName: string;
+            role: IRole;
         };
 
         access_expire: number;

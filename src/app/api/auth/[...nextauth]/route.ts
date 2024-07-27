@@ -108,10 +108,10 @@ import { handleSignInAction } from '@/utils/actions/actions';
 //             if (trigger === 'signIn' && account?.provider === 'credentials') {
 //                 if (token) {
 //                     token.access_token = user.access_token;
-//                     const { id, email } = user.user;
+//                     const { id, email,fullName,role } = user.user;
 //                     token.user = {
 //                         id,
-//                         email,
+//                         email,fullName,role
 //                     };
 //                 }
 //             }

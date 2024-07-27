@@ -2,8 +2,8 @@
 
 import { sendRequest } from '../api';
 import { getServerSession } from 'next-auth/next';
-import { revalidateTag } from 'next/cache';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { revalidateTag } from 'next/cache';
 
 export const handleFollowOrUnfollowUserAction = async (
     userIdFollowed: string,

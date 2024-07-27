@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +67,7 @@ public class AuthController {
 
                 ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUser.get().getId(),
                                 currentUser.get().getEmail(),
-                                currentUser.get().getFullName());
+                                currentUser.get().getFullName(), currentUser.get().getRole());
 
                 resLoginDTO.setUser(userLogin);
 
@@ -90,6 +91,25 @@ public class AuthController {
                 resLoginDTO.setAccessToken(access_token);
 
                 return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, responseCookie.toString()).body(resLoginDTO);
+        }
+
+        @GetMapping("/account")
+        @ApiMessage("fetch account")
+        public ResponseEntity<ResLoginDTO.UserGetAccount> getAccount() {
+                // Luôn luôn có vì vào tới đây thì token đã được check
+                String email = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get()
+                                : "";
+
+                Optional<User> currentUser = this.userService.getUserByEmail(email);
+
+                ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUser.get().getId(),
+                                currentUser.get().getEmail(),
+                                currentUser.get().getFullName(), currentUser.get().getRole());
+
+                ResLoginDTO.UserGetAccount userGetAccount = new ResLoginDTO.UserGetAccount();
+                userGetAccount.setUser(userLogin);
+
+                return ResponseEntity.ok().body(userGetAccount);
         }
 
 }

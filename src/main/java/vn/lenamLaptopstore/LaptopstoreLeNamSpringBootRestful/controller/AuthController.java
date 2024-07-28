@@ -95,7 +95,7 @@ public class AuthController {
 
         @GetMapping("/account")
         @ApiMessage("fetch account")
-        public ResponseEntity<ResLoginDTO.UserGetAccount> getAccount() {
+        public ResponseEntity<User> getAccount() {
                 // Luôn luôn có vì vào tới đây thì token đã được check
                 String email = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get()
                                 : "";
@@ -109,7 +109,7 @@ public class AuthController {
                 ResLoginDTO.UserGetAccount userGetAccount = new ResLoginDTO.UserGetAccount();
                 userGetAccount.setUser(userLogin);
 
-                return ResponseEntity.ok().body(userGetAccount);
+                return ResponseEntity.ok().body(currentUser.get());
         }
 
 }

@@ -1,6 +1,11 @@
 import Link from 'next/link';
 
-function SidebarAdmin() {
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+
+export default async function SidebarAdmin() {
+    const session = await getServerSession(authOptions);
+
     return (
         <div id="layoutSidenav_nav">
             <nav className="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -30,11 +35,9 @@ function SidebarAdmin() {
                 </div>
                 <div className="sb-sidenav-footer">
                     <div className="small">Logged in as:</div>
-                    Lê Nam
+                    {session?.user.fullName}
                 </div>
             </nav>
         </div>
     );
 }
-
-export default SidebarAdmin;

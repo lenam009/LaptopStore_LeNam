@@ -1,5 +1,8 @@
+'use client';
+
 import Box from '@mui/material/Box';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 function HeaderUserPage() {
     const isLogin = true;
@@ -58,71 +61,14 @@ function HeaderUserPage() {
                                             5
                                         </span>
                                     </Link>
-                                    <div className="dropdown my-auto">
-                                        <a
-                                            href="#"
-                                            className="dropdown"
-                                            role="button"
-                                            id="dropdownMenuLink"
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="false"
-                                            // data-bs-toggle="dropdown"
-                                            // aria-expanded="false"
+
+                                    <div className="position-relative me-4 my-auto">
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={() => signOut()}
                                         >
-                                            <i className="fas fa-user fa-2x"></i>
-                                        </a>
-                                        <ul
-                                            className="dropdown-menu dropdown-menu-end p-4"
-                                            aria-labelledby="dropdownMenuLink"
-                                        >
-                                            <li
-                                                className="d-flex align-items-center flex-column"
-                                                style={{ minWidth: '300px' }}
-                                            >
-                                                <img
-                                                    // style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden"
-                                                    style={{
-                                                        width: '150px',
-                                                        height: '150px',
-                                                        borderRadius: '50%',
-                                                        overflow: 'hidden',
-                                                    }}
-                                                    src="/images/avatar/${sessionScope.avatar}"
-                                                />
-                                                <div className="text-center my-3">
-                                                    {/* <c:out value="${pageContext.request.userPrincipal.name}" /> */}
-                                                    Lê Nam
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <a className="dropdown-item" href="#">
-                                                    Quản lý tài khoản
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="/order-history"
-                                                >
-                                                    Lịch sử mua hàng
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <hr className="dropdown-divider" />
-                                            </li>
-                                            <li>
-                                                <form method="post" action="/logout">
-                                                    <button className="dropdown-item">
-                                                        Đăng xuất
-                                                    </button>
-                                                    <input
-                                                        type="hidden"
-                                                        name="${_csrf.parameterName}"
-                                                        value="${_csrf.token}"
-                                                    />
-                                                </form>
-                                            </li>
-                                        </ul>
+                                            Logout
+                                        </button>
                                     </div>
                                 </div>
                             )}

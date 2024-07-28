@@ -13,7 +13,7 @@ import { Row, Col, Flex, Form, Input, Button, Divider, message } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 import { signIn, useSession } from 'next-auth/react';
-import { revalidateGetOneUserById } from '@/utils/actions/actions';
+import { revalidateGetCurrentUser } from '@/utils/actions/actions';
 import { useAppDispatch } from '@/utils/redux/hook';
 import { setUser } from '@/utils/redux/userSlice';
 
@@ -44,8 +44,9 @@ export default function AuthSignin() {
 
         if (result?.ok) {
             // Not dispatch because not enough user info and (should fetch api user from server : important)
-            await revalidateGetOneUserById();
-            router.push(routes.home.path);
+            await revalidateGetCurrentUser();
+
+            router.refresh();
         } else {
             message.error(result?.error);
         }

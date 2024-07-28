@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 function HeaderAdmin() {
     return (
@@ -14,12 +17,18 @@ function HeaderAdmin() {
             >
                 <i className="fas fa-bars"></i>
             </button>
+
             {/* <!-- Navbar Search--> */}
             <div className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 {/* <c:if test="${not empty sessionScope.fullName}">
                 <h5 className="text-white m-0"><c:out value="${sessionScope.fullName}" /></h5>
             </c:if> */}
-                <h5 className="text-white m-0">Le Nam</h5>
+                <div className="d-flex align-items-center">
+                    <h5 className="text-white m-0">Le Nam</h5>
+                    <button className="ms-5 btn btn-danger" onClick={() => signOut()}>
+                        Logout
+                    </button>
+                </div>
             </div>
             {/* <!-- Navbar--> */}
             <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">

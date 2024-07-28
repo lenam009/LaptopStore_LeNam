@@ -19,6 +19,11 @@ declare global {
         data?: T;
     }
 
+    interface ILogin {
+        access_token?: string;
+        user: IUser;
+    }
+
     interface IModelPaginate<T> {
         meta: {
             page: number;
@@ -30,7 +35,7 @@ declare global {
     }
 
     interface IRole {
-        id: 'USER|ADMIN';
+        id: 'USER' | 'ADMIN';
         name: string;
         description: string;
     }

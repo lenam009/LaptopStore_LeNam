@@ -1,5 +1,5 @@
 const routes = {
-    home: { path: '/' },
+    home: { user: { path: '/' }, admin: { path: '/admin' } },
     profile: {
         prefix: '/profile',
         params: ':/username',

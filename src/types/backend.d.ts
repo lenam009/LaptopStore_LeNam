@@ -24,14 +24,22 @@ declare global {
         user: IUser;
     }
 
+    interface IMeta {
+        page: number;
+        pageSize: number;
+        pages: number;
+        total: number;
+    }
+
     interface IModelPaginate<T> {
-        meta: {
-            page: number;
-            pageSize: number;
-            pages: number;
-            total: number;
-        };
+        meta: IMeta;
         result: T[];
+    }
+
+    interface IDashBoard {
+        countUser: number;
+        countProduct: number;
+        countOrder: number;
     }
 
     interface IRole {

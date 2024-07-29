@@ -10,16 +10,16 @@ import page from '@/app/(user)/@header/page';
 
 interface IProps {
     meta: IMeta | undefined;
-    products: IProduct[] | undefined;
+    users: IUser[] | undefined;
 }
 
-function ProductPage({ meta, products }: IProps) {
+function UserPage({ meta, users }: IProps) {
     const [isOpen, setOpen] = useState<boolean>(false);
 
     const router = useRouter();
 
     const handleOnChangePage = (page: number, pageSize: number) => {
-        router.replace(`/admin/product/?page=${page}&size=${pageSize}`, {
+        router.replace(`/admin/user/?page=${page}&size=${pageSize}`, {
             scroll: false,
         });
     };
@@ -29,25 +29,25 @@ function ProductPage({ meta, products }: IProps) {
             <CreateProduct isOpen={isOpen} setOpen={setOpen} />
 
             <div className="container-fluid px-4">
-                <h1 className="mt-4">Manage Products</h1>
+                <h1 className="mt-4">Manage Users</h1>
                 <ol className="breadcrumb mb-4">
                     <li className="breadcrumb-item active">
                         <a href="/admin">Dashboard</a>
                     </li>
                     <li className="breadcrumb-item active">
-                        <a>Manage Products</a>
+                        <a>Manage Users</a>
                     </li>
                 </ol>
 
                 <div className="row">
                     <div className="col-12 mx-auto">
                         <div className="d-flex justify-content-between">
-                            <h2>Table Product</h2>
+                            <h2>Table User</h2>
                             <button
                                 onClick={() => setOpen((prev) => true)}
                                 className="btn btn-primary d-flex align-items-center"
                             >
-                                Create a product
+                                Create a user
                             </button>
                         </div>
                         <hr />
@@ -56,32 +56,24 @@ function ProductPage({ meta, products }: IProps) {
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Factory</th>
-                                    <th>Image</th>
+                                    <th>Email</th>
+                                    <th>Full Name</th>
+                                    <th>Role</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {products &&
-                                    products.map((item) => (
+                                {users &&
+                                    users.map((item) => (
                                         <tr>
                                             <th>{item.id}</th>
-                                            <td>{item.name}</td>
-                                            <td>{item.price}</td>
-                                            <td>{item.factory}</td>
+                                            <td>{item.email}</td>
+                                            <td>{item.fullName}</td>
                                             <td>
-                                                <img
-                                                    src={
-                                                        process.env
-                                                            .NEXT_PUBLIC_BACKEND_URL +
-                                                        '/storage/products/' +
-                                                        item.image
-                                                    }
-                                                    width={100}
-                                                />
+                                                {(item.role && item.role.name) ??
+                                                    'Unknown'}
                                             </td>
+
                                             <td>
                                                 <a
                                                     href="/admin/product/${product.id}"
@@ -127,4 +119,4 @@ function ProductPage({ meta, products }: IProps) {
     );
 }
 
-export default ProductPage;
+export default UserPage;

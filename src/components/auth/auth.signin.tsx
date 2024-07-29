@@ -29,8 +29,15 @@ export default function AuthSignin() {
     const router = useRouter();
 
     useEffect(() => {
+        if (session && session?.user.role.id === 'ADMIN')
+            router.push(routes.home.admin.path);
+
+        if (session && session?.user.role.id === 'USER')
+            router.push(routes.home.user.path);
+
+        // refresh redux
         dispatch(setUser(undefined));
-    }, []);
+    }, [session]);
 
     const handleOnSubmit = async (values: any) => {
         setIsLoading(true);
@@ -46,7 +53,8 @@ export default function AuthSignin() {
             // Not dispatch because not enough user info and (should fetch api user from server : important)
             await revalidateGetCurrentUser();
 
-            router.refresh();
+            // router.push(routes.home.admin.path);
+            // router.refresh();
         } else {
             message.error(result?.error);
         }

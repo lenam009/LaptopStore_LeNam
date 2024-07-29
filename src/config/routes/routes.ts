@@ -1,15 +1,17 @@
+const admin = '/admin';
+const user = '/user';
+
 const routes = {
-    home: { user: { path: '/' }, admin: { path: '/admin' } },
-    profile: {
-        prefix: '/profile',
-        params: ':/username',
-        path: '/profile/:username',
+    home: { user: { path: '/user' }, admin: { path: admin } },
+
+    admin: {
+        product: { path: admin + '/product' },
+        order: { path: admin + '/order' },
+        user: { path: admin + '/user' },
     },
-    editUser: { path: '/profile/edit' },
 
     login: { path: '/login' },
     register: { path: '/register' },
-    users: { path: '/users' },
 };
 
 export default routes;

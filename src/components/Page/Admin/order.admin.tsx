@@ -1,6 +1,23 @@
-import Link from 'next/link';
+'use client';
 
-function OrderPage() {
+import { Pagination } from 'antd';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+interface IProps {
+    meta: IMeta | undefined;
+    orders: IOrder[] | undefined;
+}
+
+function OrderPage({ meta, orders }: IProps) {
+    const router = useRouter();
+
+    const handleOnChangePage = (page: number, pageSize: number) => {
+        router.replace(`/admin/order/?page=${page}&size=${pageSize}`, {
+            scroll: false,
+        });
+    };
+
     return (
         <main>
             <div className="container-fluid px-4">
@@ -32,6 +49,36 @@ function OrderPage() {
                                 </tr>
                             </thead>
                             <tbody>
+                                {orders &&
+                                    orders.map((item) => (
+                                        <tr>
+                                            <th>{item.id}</th>
+                                            <td>{item.totalPrice}</td>
+                                            <td>{item.user?.fullName}</td>
+                                            <td>{item.status}</td>
+                                            <td>
+                                                <a
+                                                    href="/admin/order/${order.id}"
+                                                    className="btn btn-success"
+                                                >
+                                                    View
+                                                </a>
+                                                <a
+                                                    href="/admin/order/update/${order.id}"
+                                                    className="btn btn-warning mx-2"
+                                                >
+                                                    Update
+                                                </a>
+                                                <a
+                                                    href="/admin/user/delete/${user.id}"
+                                                    className="btn btn-danger"
+                                                >
+                                                    Delete
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    ))}
+
                                 {/* <c:forEach var="order" items="${orders}">
                             <tr>
                                 <th>${order.id}</th>
@@ -45,62 +92,22 @@ function OrderPage() {
                                 </td>
                             </tr>
                         </c:forEach> */}
-
-                                <tr>
-                                    <th>1</th>
-                                    <td>200 đ</td>
-                                    <td>fullname 1</td>
-                                    <td>status 1</td>
-                                    <td>
-                                        <a
-                                            href="/admin/order/${order.id}"
-                                            className="btn btn-success"
-                                        >
-                                            View
-                                        </a>
-                                        <a
-                                            href="/admin/order/update/${order.id}"
-                                            className="btn btn-warning mx-2"
-                                        >
-                                            Update
-                                        </a>
-                                        <a
-                                            href="/admin/user/delete/${user.id}"
-                                            className="btn btn-danger"
-                                        >
-                                            Delete
-                                        </a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th>1 2</th>
-                                    <td>200 đ 2</td>
-                                    <td>fullname 1 2</td>
-                                    <td>status 1 2</td>
-                                    <td>
-                                        <a
-                                            href="/admin/order/${order.id}"
-                                            className="btn btn-success"
-                                        >
-                                            View
-                                        </a>
-                                        <a
-                                            href="/admin/order/update/${order.id}"
-                                            className="btn btn-warning mx-2"
-                                        >
-                                            Update
-                                        </a>
-                                        <a
-                                            href="/admin/user/delete/${user.id}"
-                                            className="btn btn-danger"
-                                        >
-                                            Delete
-                                        </a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
+
+                        <nav aria-label="Page navigation example">
+                            <ul className="pagination justify-content-center">
+                                <Pagination
+                                    defaultCurrent={1}
+                                    total={meta?.total}
+                                    current={meta?.page}
+                                    pageSize={meta?.pageSize}
+                                    onChange={(page, number) =>
+                                        handleOnChangePage(page, number)
+                                    }
+                                />
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

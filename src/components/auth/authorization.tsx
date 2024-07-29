@@ -10,12 +10,12 @@ interface IProps {
 }
 
 export default async function Authorization({ authorization, children }: IProps) {
-    const ACT_ENABLE = false;
+    const ACT_ENABLE = true;
     if (!ACT_ENABLE) return <>{children}</>;
 
     const session = await getServerSession(authOptions);
 
-    const isAdminSession = 'ADMIN';
+    const isAdminSession = session && session?.user.role.id;
 
     if (authorization !== isAdminSession) {
         return (

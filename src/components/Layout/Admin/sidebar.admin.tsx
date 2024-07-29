@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import routes from '@/config/routes/routes';
 
 export default async function SidebarAdmin() {
     const session = await getServerSession(authOptions);
@@ -19,17 +20,24 @@ export default async function SidebarAdmin() {
                             Dashboard
                         </Link>
 
-                        <Link className="nav-link" href="/admin/product">
+                        <Link className="nav-link" href={routes.admin.product.path}>
                             <div className="sb-nav-link-icon">
                                 <i className="fas fa-tachometer-alt"></i>
                             </div>
                             Product
                         </Link>
-                        <Link className="nav-link" href="/admin/order">
+                        <Link className="nav-link" href={routes.admin.order.path}>
                             <div className="sb-nav-link-icon">
                                 <i className="fas fa-tachometer-alt"></i>
                             </div>
                             Order
+                        </Link>
+
+                        <Link className="nav-link" href={routes.admin.user.path}>
+                            <div className="sb-nav-link-icon">
+                                <i className="fas fa-tachometer-alt"></i>
+                            </div>
+                            User
                         </Link>
                     </div>
                 </div>

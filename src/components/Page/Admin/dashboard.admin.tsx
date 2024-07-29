@@ -1,4 +1,8 @@
-function DashboardPage() {
+interface IProps {
+    dashBoard: IDashBoard | undefined;
+}
+
+function DashboardPage({ dashBoard }: IProps) {
     return (
         <main>
             <div className="container-fluid px-4">
@@ -9,7 +13,9 @@ function DashboardPage() {
                 <div className="row">
                     <div className="col-xl-4 col-md-6">
                         <div className="card bg-primary text-white mb-4">
-                            <div className="card-body">Count User(3)</div>
+                            <div className="card-body">
+                                Count User({dashBoard?.countUser})
+                            </div>
                             <div className="card-footer d-flex align-items-center justify-content-between">
                                 <a className="small text-white stretched-link" href="#">
                                     View Details
@@ -22,7 +28,9 @@ function DashboardPage() {
                     </div>
                     <div className="col-xl-4 col-md-6">
                         <div className="card bg-warning text-white mb-4">
-                            <div className="card-body">Count Product(5)</div>
+                            <div className="card-body">
+                                Count Product({dashBoard?.countProduct})
+                            </div>
                             <div className="card-footer d-flex align-items-center justify-content-between">
                                 <a className="small text-white stretched-link" href="#">
                                     View Details
@@ -35,7 +43,9 @@ function DashboardPage() {
                     </div>
                     <div className="col-xl-4 col-md-6">
                         <div className="card bg-success text-white mb-4">
-                            <div className="card-body">Count Order(7)</div>
+                            <div className="card-body">
+                                Count Order({dashBoard?.countOrder})
+                            </div>
                             <div className="card-footer d-flex align-items-center justify-content-between">
                                 <a className="small text-white stretched-link" href="#">
                                     View Details

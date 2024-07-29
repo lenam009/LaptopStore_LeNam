@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
-import ProductPage from '@/components/Page/Admin/product.admin';
-import { handleGetProducts, revalidateGetProducts } from '@/utils/actions/actions';
+import UserPage from '@/components/Page/Admin/user.admin';
+import { handleGetUsers } from '@/utils/actions/actions';
 
 interface IProps {
     searchParams: {
@@ -13,11 +13,11 @@ async function ProductAdminPage({ searchParams }: IProps) {
     const page = (searchParams && searchParams.page) ?? 1;
     const size = (searchParams && searchParams.size) ?? 3;
 
-    const products = await handleGetProducts(page, size);
+    const users = await handleGetUsers(page, size);
 
     return (
         <Box>
-            <ProductPage meta={products.data?.meta} products={products.data?.result} />
+            <UserPage meta={users.data?.meta} users={users.data?.result} />
         </Box>
     );
 }

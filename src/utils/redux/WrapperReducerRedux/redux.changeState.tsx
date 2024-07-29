@@ -24,19 +24,19 @@ export default function ReduxChangeState({
         if (user && user.data) {
             dispatch(setUser(user.data));
 
-            console.log('Redux fetch API', pathname);
+            // console.log('Redux fetch API', pathname, user.data);
 
-            if (
-                user.data.role.id === 'ADMIN' &&
-                !pathname.startsWith(routes.home.admin.path)
-            ) {
-                router.push(routes.home.admin.path);
-            } else if (
-                user.data.role.id === 'USER' &&
-                !pathname.startsWith(routes.home.user.path)
-            ) {
-                router.push(routes.home.user.path);
-            }
+            // if (
+            //     user.data.role.id === 'ADMIN' &&
+            //     !pathname.startsWith(routes.home.admin.path)
+            // ) {
+            //     router.push(routes.home.admin.path);
+            // } else if (
+            //     user.data.role.id === 'USER' &&
+            //     !pathname.startsWith(routes.home.user.path)
+            // ) {
+            //     router.push(routes.home.user.path);
+            // }
         }
     }, [user]);
 

@@ -140,6 +140,32 @@ export const handleGetUsers = async (page: number, size: number) => {
     return signInAction;
 };
 
+export const handleUploadFile = async (
+    fileFormData: FormData,
+    folder: 'products' | 'users',
+) => {
+    const session = await getServerSession(authOptions);
+
+    const signInAction = (await sendRequest<IBackendRes<IUploadFile>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files`,
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+        },
+        body: fileFormData,
+        queryParams: { folder },
+    })
+        .then((res) => {
+            return res;
+        })
+        .catch((error) => {
+            console.log('error handleUploadFile', error);
+            return error;
+        })) as IBackendRes<IUploadFile>;
+
+    return signInAction;
+};
+
 export const revalidateGetCurrentUser = () => {
     revalidateTag('handleGetCurrentUser');
 };

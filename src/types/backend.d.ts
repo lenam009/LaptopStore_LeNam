@@ -36,6 +36,11 @@ declare global {
         result: T[];
     }
 
+    interface IUploadFile {
+        fileName: string;
+        uploadedAt: string;
+    }
+
     interface IDashBoard {
         countUser: number;
         countProduct: number;

@@ -1,4 +1,12 @@
+'use client';
+
 import { Modal } from '@mui/material';
+import { useSession } from 'next-auth/react';
+import type { UploadProps, UploadFile } from 'antd';
+import { useState } from 'react';
+import { Avatar, Flex, Input, Button, message, Upload } from 'antd';
+import { handleUploadFile } from '@/utils/actions/actions';
+import { SnippetsOutlined } from '@ant-design/icons';
 
 interface IProps {
     isOpen: boolean;
@@ -6,6 +14,45 @@ interface IProps {
 }
 
 function CreateProduct({ isOpen, setOpen }: IProps) {
+    const { data: sessionAuth } = useSession();
+
+    const [file, setFile] = useState<string>('');
+    const [fieldList, setFieldList] = useState<UploadFile[]>([]);
+
+    const handleOnChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            let fileFormData = new FormData();
+            fileFormData.append('file', e.target.files[0]);
+
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files?folder=products`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJwZXJtaXNzaW9uIjpbIlJPTEVfVVNFUl9DUkVBVEUiLCJST0xFX1VTRVJfVVBEQVRFIl0sImV4cCI6MTcyOTgyNjExMiwiaWF0IjoxNzIxMTg2MTEyLCJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImZ1bGxOYW1lIjoibGUgbmFtIn19.109HF0EMl51D0wdLgiJrhQd3eA7xMDRkmmcn3kGxmNUmA4pEhpvxNsnIHBRx_iOqcFHMLpyW9KswA03blBln5Q`,
+                },
+                body: fileFormData,
+            }).then((res) => console.log('res', res));
+        }
+    };
+
+    const handleOnClickSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        // e.preventDefault();
+        // const typeOfFile = getTypeOfFile(file);
+        // const createPost = await handleCreatePost({
+        //     desc,
+        //     target_type: typeOfFile.target_type,
+        //     [typeOfFile.type]: file,
+        // });
+        // if (createPost.data) {
+        //     revalidateGetPostsFollowing();
+        //     setFieldList([]);
+        //     setFile('');
+        //     setDesc('');
+        //     message.success(createPost.message);
+        // } else {
+        //     message.error(createPost.message);
+        // }
+    };
+
     return (
         <Modal
             open={isOpen}
@@ -158,6 +205,7 @@ function CreateProduct({ isOpen, setOpen }: IProps) {
                                                 id="avatarFile"
                                                 name="lenamFile"
                                                 accept=".png, .jpg, .jpeg"
+                                                onChange={(e) => handleOnChangeFile(e)}
                                             />
                                         </div>
                                     </div>

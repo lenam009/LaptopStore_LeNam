@@ -17,7 +17,10 @@ export const sendRequest = async <T>(props: IRequest) => {
         // by default setting the content-type to be json type
         // Next 15 bổ sung thêm dưới để catching data (bổ sung ở header)
         // cache: 'force-cache',
-        headers: new Headers({ 'content-type': 'application/json', ...headers }),
+        headers: new Headers({
+            'content-type': 'application/json',
+            ...headers,
+        }),
         body: body ? JSON.stringify(body) : null,
         ...nextOption,
     };

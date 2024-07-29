@@ -7,7 +7,7 @@ import { revalidateTag } from 'next/cache';
 import { number } from 'yup';
 
 export const handleSignInAction = async (email: string, password: string) => {
-    const signInAction = (await sendRequest<IBackendRes<ILogin>>({
+    const action = (await sendRequest<IBackendRes<ILogin>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
         method: 'POST',
         headers: {
@@ -23,13 +23,13 @@ export const handleSignInAction = async (email: string, password: string) => {
             return error;
         })) as IBackendRes<ILogin>;
 
-    return signInAction;
+    return action;
 };
 
 export const handleGetCurrentUser = async () => {
     const session = await getServerSession(authOptions);
 
-    const signInAction = (await sendRequest<IBackendRes<IUser>>({
+    const action = (await sendRequest<IBackendRes<IUser>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/account`,
         method: 'GET',
         headers: {
@@ -46,13 +46,13 @@ export const handleGetCurrentUser = async () => {
             return error;
         })) as IBackendRes<IUser>;
 
-    return signInAction;
+    return action;
 };
 
 export const handleGetDashboard = async () => {
     const session = await getServerSession(authOptions);
 
-    const signInAction = (await sendRequest<IBackendRes<IDashBoard>>({
+    const action = (await sendRequest<IBackendRes<IDashBoard>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/dashboards`,
         method: 'GET',
         headers: {
@@ -68,13 +68,13 @@ export const handleGetDashboard = async () => {
             return error;
         })) as IBackendRes<IDashBoard>;
 
-    return signInAction;
+    return action;
 };
 
 export const handleGetProducts = async (page: number, size: number) => {
     const session = await getServerSession(authOptions);
 
-    const signInAction = (await sendRequest<IBackendRes<IModelPaginate<IProduct>>>({
+    const action = (await sendRequest<IBackendRes<IModelPaginate<IProduct>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products`,
         method: 'GET',
         headers: {
@@ -91,13 +91,13 @@ export const handleGetProducts = async (page: number, size: number) => {
             return error;
         })) as IBackendRes<IModelPaginate<IProduct>>;
 
-    return signInAction;
+    return action;
 };
 
 export const handleGetOrders = async (page: number, size: number) => {
     const session = await getServerSession(authOptions);
 
-    const signInAction = (await sendRequest<IBackendRes<IModelPaginate<IOrder>>>({
+    const action = (await sendRequest<IBackendRes<IModelPaginate<IOrder>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/orders`,
         method: 'GET',
         headers: {
@@ -114,13 +114,13 @@ export const handleGetOrders = async (page: number, size: number) => {
             return error;
         })) as IBackendRes<IModelPaginate<IOrder>>;
 
-    return signInAction;
+    return action;
 };
 
 export const handleGetUsers = async (page: number, size: number) => {
     const session = await getServerSession(authOptions);
 
-    const signInAction = (await sendRequest<IBackendRes<IModelPaginate<IUser>>>({
+    const action = (await sendRequest<IBackendRes<IModelPaginate<IUser>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users`,
         method: 'GET',
         headers: {
@@ -137,7 +137,7 @@ export const handleGetUsers = async (page: number, size: number) => {
             return error;
         })) as IBackendRes<IModelPaginate<IUser>>;
 
-    return signInAction;
+    return action;
 };
 
 export const handleUploadFile = async (
@@ -146,7 +146,7 @@ export const handleUploadFile = async (
 ) => {
     const session = await getServerSession(authOptions);
 
-    const signInAction = (await sendRequest<IBackendRes<IUploadFile>>({
+    const action = (await sendRequest<IBackendRes<IUploadFile>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files`,
         method: 'POST',
         headers: {
@@ -163,7 +163,29 @@ export const handleUploadFile = async (
             return error;
         })) as IBackendRes<IUploadFile>;
 
-    return signInAction;
+    return action;
+};
+
+export const handleCreateProduct = async (data: IProduct) => {
+    const session = await getServerSession(authOptions);
+
+    const action = (await sendRequest<IBackendRes<IProduct>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products`,
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+        },
+        body: data,
+    })
+        .then((res) => {
+            return res;
+        })
+        .catch((error) => {
+            console.log('error handleCreateProduct', error);
+            return error;
+        })) as IBackendRes<IProduct>;
+
+    return action;
 };
 
 export const revalidateGetCurrentUser = () => {

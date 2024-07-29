@@ -1,8 +1,12 @@
 const admin = '/admin';
-const user = '/user';
+const user = '/';
 
 const routes = {
     home: { user: { path: '/user' }, admin: { path: admin } },
+
+    user: {
+        cart: { path: '/cart' },
+    },
 
     admin: {
         product: { path: admin + '/product' },

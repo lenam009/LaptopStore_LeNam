@@ -1,11 +1,24 @@
 'use client';
 
-import { Modal } from '@mui/material';
+import { Box, Modal } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import type { UploadProps, UploadFile } from 'antd';
+import {
+    Button,
+    Modal as ModalAntd,
+    Form,
+    Input,
+    Image,
+    Upload,
+    message,
+    InputNumber,
+} from 'antd';
 import { useState } from 'react';
-import { Avatar, Flex, Input, Button, message, Upload } from 'antd';
-import { handleUploadFile } from '@/utils/actions/actions';
+import {
+    handleCreateProduct,
+    handleUploadFile,
+    revalidateGetProducts,
+} from '@/utils/actions/actions';
 import { SnippetsOutlined } from '@ant-design/icons';
 
 interface IProps {
@@ -13,11 +26,14 @@ interface IProps {
     setOpen: (value: boolean) => void;
 }
 
+type FieldType = IProduct;
+
 function CreateProduct({ isOpen, setOpen }: IProps) {
     const { data: sessionAuth } = useSession();
 
-    const [file, setFile] = useState<string>('');
-    const [fieldList, setFieldList] = useState<UploadFile[]>([]);
+    const [form] = Form.useForm<FieldType>();
+
+    const [fileName, setFileName] = useState<string>('');
 
     const handleOnChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -30,27 +46,31 @@ function CreateProduct({ isOpen, setOpen }: IProps) {
                     Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJwZXJtaXNzaW9uIjpbIlJPTEVfVVNFUl9DUkVBVEUiLCJST0xFX1VTRVJfVVBEQVRFIl0sImV4cCI6MTcyOTgyNjExMiwiaWF0IjoxNzIxMTg2MTEyLCJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImZ1bGxOYW1lIjoibGUgbmFtIn19.109HF0EMl51D0wdLgiJrhQd3eA7xMDRkmmcn3kGxmNUmA4pEhpvxNsnIHBRx_iOqcFHMLpyW9KswA03blBln5Q`,
                 },
                 body: fileFormData,
-            }).then((res) => console.log('res', res));
+            })
+                .then((res) => {
+                    return res.json() as Promise<IBackendRes<IUploadFile>>;
+                })
+                .then((res) => setFileName(res.data ? res.data.fileName : ''));
         }
     };
 
-    const handleOnClickSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        // e.preventDefault();
-        // const typeOfFile = getTypeOfFile(file);
-        // const createPost = await handleCreatePost({
-        //     desc,
-        //     target_type: typeOfFile.target_type,
-        //     [typeOfFile.type]: file,
-        // });
-        // if (createPost.data) {
-        //     revalidateGetPostsFollowing();
-        //     setFieldList([]);
-        //     setFile('');
-        //     setDesc('');
-        //     message.success(createPost.message);
-        // } else {
-        //     message.error(createPost.message);
-        // }
+    const onFinish = async (values: FieldType) => {
+        const data: FieldType = { ...values, image: fileName };
+
+        const result = await handleCreateProduct(data);
+
+        if (result.data) {
+            await revalidateGetProducts();
+            message.success(result.message);
+        } else {
+            message.error(result.message);
+        }
+
+        console.log('data', data);
+    };
+
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
     };
 
     return (
@@ -61,134 +81,76 @@ function CreateProduct({ isOpen, setOpen }: IProps) {
             aria-describedby="modal-modal-description"
         >
             <main>
-                <div className="container px-4 bg-white">
+                <div className="container px-4 pb-2 bg-white">
                     <h1 className="mt-4"></h1>
 
                     {/* <!-- Content --> */}
                     <div className="row">
                         <div className="col-md-6 col-12 mx-auto">
                             <h1 className="mt-4">Create Product</h1>
+
+                            <Form
+                                name="basic"
+                                labelCol={{ span: 20 }}
+                                wrapperCol={{ span: 25 }}
+                                style={{ maxWidth: 700 }}
+                                onFinish={onFinish}
+                                onFinishFailed={onFinishFailed}
+                                autoComplete="off"
+                                form={form}
+                                layout="vertical"
+                            >
+                                <Box
+                                    className="d-flex justify-content-between flex-wrap"
+                                    sx={{
+                                        '.input-form': {
+                                            width: '45%',
+                                        },
+                                    }}
+                                >
+                                    <Form.Item<FieldType>
+                                        label="Name"
+                                        name="name"
+                                        className="input-form"
+                                    >
+                                        <Input />
+                                    </Form.Item>
+
+                                    <Form.Item<FieldType>
+                                        label="Price"
+                                        name="price"
+                                        className="input-form"
+                                    >
+                                        <InputNumber style={{ width: '100%' }} />
+                                    </Form.Item>
+
+                                    <Form.Item<FieldType>
+                                        label="Detail description"
+                                        name="detailDesc"
+                                        className="input-form"
+                                    >
+                                        <Input.TextArea />
+                                    </Form.Item>
+
+                                    <Form.Item<FieldType>
+                                        label="Short description"
+                                        name="shortDesc"
+                                        className="input-form"
+                                    >
+                                        <Input />
+                                    </Form.Item>
+
+                                    <Form.Item<FieldType>
+                                        label="Quantity"
+                                        name="quantity"
+                                        className="input-form"
+                                    >
+                                        <InputNumber style={{ width: '100%' }} />
+                                    </Form.Item>
+                                </Box>
+                            </Form>
+
                             <form>
-                                {/* <!-- Email --> */}
-                                <div className="mb-3 row">
-                                    <div className="col">
-                                        <label
-                                            htmlFor="exampleInputEmail1"
-                                            className="form-label"
-                                        >
-                                            Name:
-                                        </label>
-
-                                        <input
-                                            type="number"
-                                            className="form-control ${not empty priceError ? 'is-invalid' : ''}"
-                                            id="exampleInputPassword1"
-                                        />
-                                    </div>
-                                    {/* <!-- Password --> */}
-                                    <div className="col">
-                                        <label
-                                            htmlFor="exampleInputPassword1"
-                                            className="form-label"
-                                        >
-                                            Price:
-                                        </label>
-
-                                        <input
-                                            type="number"
-                                            className="form-control ${not empty priceError ? 'is-invalid' : ''}"
-                                            id="exampleInputPassword1"
-                                        />
-                                    </div>
-                                </div>
-                                {/* <!-- Phone --> */}
-                                <div className="mb-3">
-                                    <label
-                                        htmlFor="exampleInputTel"
-                                        className="form-label"
-                                    >
-                                        Detail description:
-                                    </label>
-
-                                    <textarea
-                                        className="form-control"
-                                        id="exampleInputTel"
-                                    >
-                                        At w3schools.com you will learn how to make a
-                                        website. They offer free tutorials in all web
-                                        development technologies.
-                                    </textarea>
-                                </div>
-
-                                {/* <!-- Full name --> */}
-                                <div className="row mb-3">
-                                    <div className="col">
-                                        <label
-                                            htmlFor="exampleInputFullName"
-                                            className="form-label"
-                                        >
-                                            Short description:
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="exampleInputFullName"
-                                        />
-                                    </div>
-                                    <div className="col">
-                                        <label
-                                            htmlFor="exampleInputAddress"
-                                            className="form-label"
-                                        >
-                                            {' '}
-                                            Quantity{' '}
-                                        </label>
-
-                                        <input
-                                            className="form-control ${not empty quantityError ? 'is-invalid' : ''}"
-                                            id="exampleInputAddress"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="row mb-3">
-                                    <div className="col">
-                                        <label
-                                            htmlFor="exampleInputFullName"
-                                            className="form-label"
-                                        >
-                                            Factory:
-                                        </label>
-                                        <select
-                                            className="form-select"
-                                            aria-label="Default select example"
-                                        >
-                                            <option value="Apple">Apple</option>
-                                            <option value="Asus">Asus</option>
-                                            <option value="Lenovo">Lenovo</option>
-                                            <option value="Dell">Dell</option>
-                                            <option value="Gigabyte">Gigabyte</option>
-                                        </select>
-                                    </div>
-                                    <div className="col">
-                                        <label
-                                            htmlFor="exampleInputFullName"
-                                            className="form-label"
-                                        >
-                                            Target:
-                                        </label>
-                                        <select
-                                            className="form-select"
-                                            aria-label="Default select example"
-                                        >
-                                            <option value="Student - office">
-                                                Student - office
-                                            </option>
-                                            <option value="Gaming">Gaming</option>
-                                        </select>
-                                    </div>
-                                </div>
-
                                 <div className="mb-3 row">
                                     {/* <!-- Upload --> */}
                                     <div className="col-5">
@@ -209,25 +171,26 @@ function CreateProduct({ isOpen, setOpen }: IProps) {
                                             />
                                         </div>
                                     </div>
-                                    <div className="col-2">
-                                        <img
-                                            width="100%"
-                                            style={{ height: '69px', display: 'none' }}
-                                            id="avatarPreview"
-                                        />
-                                    </div>
                                 </div>
 
-                                <button type="submit" className="btn btn-primary">
+                                <Button
+                                    type="primary"
+                                    // htmlType="submit"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        form.submit();
+                                    }}
+                                >
                                     Create
-                                </button>
-                                <button
-                                    type="submit"
+                                </Button>
+                                <Button
+                                    danger
+                                    type="primary"
                                     onClick={() => setOpen(false)}
-                                    className="btn btn-danger"
+                                    className="ms-5"
                                 >
                                     Close
-                                </button>
+                                </Button>
                             </form>
                         </div>
                     </div>

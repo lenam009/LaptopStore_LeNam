@@ -62,16 +62,16 @@ declare global {
     }
 
     interface IProduct {
-        id: string;
+        id?: string;
         name: string;
         price: string;
         image: string;
         detailDesc: string;
         shortDesc: string;
         quantity: number;
-        sold: string;
-        factory: string;
-        target: string;
+        sold?: string;
+        factory?: string;
+        target?: string;
     }
 
     interface ICart {

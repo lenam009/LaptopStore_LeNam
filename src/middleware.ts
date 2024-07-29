@@ -60,4 +60,10 @@ export default withAuth({
     // },
 });
 
-export const config = { matcher: ['/', '/admin/:path*', '/user/:path*'] };
+export const config = {
+    matcher: [
+        routes.home.user.path,
+        routes.user.cart.path,
+        routes.home.admin.path + '/:path*',
+    ],
+};

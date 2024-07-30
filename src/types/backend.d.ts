@@ -76,7 +76,6 @@ declare global {
 
     interface ICart {
         id: string;
-        product: IProduct;
         cartDetails: ICartDetail[];
         sum: number;
         totalPrice: number;

@@ -2,7 +2,7 @@ const admin = '/admin';
 const user = '/';
 
 const routes = {
-    home: { user: { path: '/user' }, admin: { path: admin } },
+    home: { user: { path: user }, admin: { path: admin } },
 
     user: {
         cart: { path: '/cart' },

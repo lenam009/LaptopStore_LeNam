@@ -65,5 +65,6 @@ export const config = {
         routes.home.user.path,
         routes.user.cart.path,
         routes.home.admin.path + '/:path*',
+        '/login',
     ],
 };

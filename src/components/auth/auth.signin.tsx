@@ -2,7 +2,7 @@
 import styles from './auth.signin.module.scss';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
@@ -13,12 +13,16 @@ import { Row, Col, Flex, Form, Input, Button, Divider, message } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 import { signIn, useSession } from 'next-auth/react';
-import { revalidateGetCurrentUser } from '@/utils/actions/actions';
+import {
+    revalidateGetCartByUser,
+    revalidateGetCurrentUser,
+} from '@/utils/actions/actions';
 import { useAppDispatch } from '@/utils/redux/hook';
-import { setUser } from '@/utils/redux/userSlice';
+import { setUser } from '@/utils/redux/slice/userSlice';
 
 import routes from '@/config/routes/routes';
 import { sendRequest } from '@/utils/api';
+import { setCart } from '@/utils/redux/slice/cartSlice';
 
 export default function AuthSignin() {
     const { data: session } = useSession();
@@ -29,14 +33,15 @@ export default function AuthSignin() {
     const router = useRouter();
 
     useEffect(() => {
-        if (session && session?.user.role.id === 'ADMIN')
-            router.push(routes.home.admin.path);
-
-        if (session && session?.user.role.id === 'USER')
-            router.push(routes.home.user.path);
+        if (session && session.user)
+            if (session && session?.user.role.id === 'ADMIN')
+                router.push(routes.home.admin.path);
+            else if (session && session?.user.role.id === 'USER')
+                router.push(routes.home.user.path);
 
         // refresh redux
         dispatch(setUser(undefined));
+        dispatch(setCart({ id: '', cartDetails: [], sum: 0, totalPrice: 0 }));
     }, [session]);
 
     const handleOnSubmit = async (values: any) => {
@@ -52,6 +57,7 @@ export default function AuthSignin() {
         if (result?.ok) {
             // Not dispatch because not enough user info and (should fetch api user from server : important)
             await revalidateGetCurrentUser();
+            await revalidateGetCartByUser();
 
             // router.push(routes.home.admin.path);
             // router.refresh();

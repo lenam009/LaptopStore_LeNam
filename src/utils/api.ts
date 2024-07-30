@@ -42,6 +42,7 @@ export const sendRequest = async <T>(props: IRequest) => {
                     statusCode: res.status,
                     message: json?.message ?? '',
                     error: json?.error ?? '',
+                    data: json?.data ?? null,
                 } as T);
             });
         }

@@ -7,14 +7,13 @@ import { useRouter } from 'next/navigation';
 import routes from '@/config/routes/routes';
 import { usePathname } from 'next/navigation';
 
-import { setUser } from '../slice/userSlice';
-
+import { setCart, setCartDetail } from '../../slice/cartSlice';
 export default function ReduxChangeState({
     children,
-    user,
+    cart,
 }: {
     children: React.ReactNode;
-    user: IBackendRes<IUser> | null;
+    cart: ICart | undefined | null;
 }) {
     const dispatch = useAppDispatch();
     const pathname = usePathname();
@@ -22,24 +21,10 @@ export default function ReduxChangeState({
     const router = useRouter();
 
     useEffect(() => {
-        if (user && user.data) {
-            dispatch(setUser(user.data));
-
-            // console.log('Redux fetch API', pathname, user.data);
-
-            // if (
-            //     user.data.role.id === 'ADMIN' &&
-            //     !pathname.startsWith(routes.home.admin.path)
-            // ) {
-            //     router.push(routes.home.admin.path);
-            // } else if (
-            //     user.data.role.id === 'USER' &&
-            //     !pathname.startsWith(routes.home.user.path)
-            // ) {
-            //     router.push(routes.home.user.path);
-            // }
+        if (cart) {
+            dispatch(setCart(cart));
         }
-    }, [user]);
+    }, [cart]);
 
     return (
         <>

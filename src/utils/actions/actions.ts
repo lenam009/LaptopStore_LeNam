@@ -188,6 +188,78 @@ export const handleCreateProduct = async (data: IProduct) => {
     return action;
 };
 
+export const handleGetCartByUser = async () => {
+    const session = await getServerSession(authOptions);
+
+    const action = (await sendRequest<IBackendRes<ICart>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/carts`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+        },
+    })
+        .then((res) => {
+            return res;
+        })
+        .catch((error) => {
+            console.log('error handleGetCartByUser', error);
+            return error;
+        })) as IBackendRes<ICart>;
+
+    return action;
+};
+
+export const handleCreateCart = async (idProduct: string) => {
+    const session = await getServerSession(authOptions);
+
+    const action = (await sendRequest<IBackendRes<IProduct>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/carts/${idProduct}`,
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+        },
+    })
+        .then((res) => {
+            return res;
+        })
+        .catch((error) => {
+            console.log('error handleCreateCart', error);
+            return error;
+        })) as IBackendRes<IProduct>;
+
+    return action;
+};
+
+export const handleCheckout = async ({
+    receiverName,
+    receiverAddress,
+    receiverPhone,
+}: {
+    receiverName: string;
+    receiverAddress: string;
+    receiverPhone: string;
+}) => {
+    const session = await getServerSession(authOptions);
+
+    const action = (await sendRequest<IBackendRes<IOrder>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/items/place-order`,
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+        },
+        body: { receiverName, receiverAddress, receiverPhone },
+    })
+        .then((res) => {
+            return res;
+        })
+        .catch((error) => {
+            console.log('error handleCheckout', error);
+            return error;
+        })) as IBackendRes<IProduct>;
+
+    return action;
+};
+
 export const revalidateGetCurrentUser = () => {
     revalidateTag('handleGetCurrentUser');
 };
@@ -206,4 +278,8 @@ export const revalidateGetOrders = () => {
 
 export const revalidateGetUsers = () => {
     revalidateTag('handleGetUsers');
+};
+
+export const revalidateGetCartByUser = () => {
+    revalidateTag('handleGetCartByUser');
 };

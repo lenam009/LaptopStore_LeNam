@@ -82,7 +82,13 @@ function HomepageUser({ meta, products }: IProps) {
 
                                                 <div className="d-flex justify-content-center flex-lg-wrap flex-column">
                                                     <p className="text-dark fs-5 fw-bold mb-4">
-                                                        {item.price} đ
+                                                        {item.price
+                                                            .toFixed(0)
+                                                            .replace(
+                                                                /(\d)(?=(\d{3})+(?!\d))/g,
+                                                                '$1.',
+                                                            )}
+                                                        đ
                                                     </p>
 
                                                     <button

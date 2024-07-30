@@ -45,7 +45,9 @@ function HeaderUserPage() {
                         <div className="d-flex m-3 me-0">
                             {isLogin && (
                                 <div className="d-flex m-3 me-0">
-                                    <span className="my-auto mx-3">Lê Nam</span>
+                                    <span className="my-auto mx-3">
+                                        {session.user.fullName}
+                                    </span>
 
                                     <Link
                                         href={routes.user.cart.path}

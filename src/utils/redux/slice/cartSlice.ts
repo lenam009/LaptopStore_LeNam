@@ -18,11 +18,18 @@ export const cartSlice = createSlice({
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
-        setCart: (state, action: PayloadAction<ICart>) => {
-            state.cartDetails = action.payload.cartDetails;
-            state.id = action.payload.id;
-            state.sum = action.payload.sum;
-            state.totalPrice = action.payload.totalPrice;
+        setCart: (state, action: PayloadAction<ICart | undefined | null>) => {
+            if (action.payload) {
+                state.cartDetails = action.payload.cartDetails;
+                state.id = action.payload.id;
+                state.sum = action.payload.sum;
+                state.totalPrice = action.payload.totalPrice;
+            } else {
+                state.cartDetails = [];
+                state.id = '';
+                state.sum = 0;
+                state.totalPrice = 0;
+            }
         },
 
         setCartDetail: (state, action: PayloadAction<ICartDetail[]>) => {

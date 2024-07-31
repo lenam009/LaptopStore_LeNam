@@ -23,9 +23,9 @@ function HeaderUserPage() {
         >
             <div className="container px-0">
                 <nav className="navbar navbar-light  navbar-expand-xl">
-                    <Link href="/">
+                    <a href="/">
                         <h1 className="text-primary display-6">Lê Nam</h1>
-                    </Link>
+                    </a>
                     <button
                         className="navbar-toggler py-2 px-3"
                         type="button"
@@ -49,12 +49,12 @@ function HeaderUserPage() {
                                         {session.user.fullName}
                                     </span>
 
-                                    <Link
+                                    <a
                                         href={routes.user.cart.path}
                                         className="position-relative me-4 my-auto"
                                     >
                                         Cart ({cartCurrent.sum})
-                                    </Link>
+                                    </a>
 
                                     <div className="position-relative me-4 my-auto">
                                         <button

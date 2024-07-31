@@ -51,7 +51,7 @@ export default function CartUser() {
         console.log('Failed:', errorInfo);
     };
 
-    const isEmpty = !!!cartCurrent;
+    const isEmpty = cartCurrent.cartDetails.length === 0;
 
     return (
         <>

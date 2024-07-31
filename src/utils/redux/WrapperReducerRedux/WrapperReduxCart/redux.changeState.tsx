@@ -21,9 +21,7 @@ export default function ReduxChangeState({
     const router = useRouter();
 
     useEffect(() => {
-        if (cart) {
-            dispatch(setCart(cart));
-        }
+        dispatch(setCart(cart));
     }, [cart]);
 
     return (

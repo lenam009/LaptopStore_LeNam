@@ -27,7 +27,7 @@ function HomepageUser({ meta, products }: IProps) {
         const result = await handleAddToCart(idProduct);
 
         if (result.data) {
-            message.success(result.message);
+            message.success('Add product to cart successful');
             await revalidateGetCartByUser();
         } else {
             message.error(result.message);

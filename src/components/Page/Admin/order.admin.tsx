@@ -45,6 +45,7 @@ function OrderPage({ meta, orders }: IProps) {
                                     <th>Total Price</th>
                                     <th>User</th>
                                     <th>Status</th>
+                                    <th>Date order</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -56,6 +57,7 @@ function OrderPage({ meta, orders }: IProps) {
                                             <td>{item.totalPrice}</td>
                                             <td>{item.user?.fullName}</td>
                                             <td>{item.status}</td>
+                                            <td>{item.createdAt}</td>
                                             <td>
                                                 <a
                                                     href="/admin/order/${order.id}"

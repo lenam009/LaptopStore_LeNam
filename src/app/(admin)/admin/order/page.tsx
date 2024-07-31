@@ -12,7 +12,7 @@ interface IProps {
 
 async function OrderAdminPage({ searchParams }: IProps) {
     const page = (searchParams && searchParams.page) ?? 1;
-    const size = (searchParams && searchParams.size) ?? 2;
+    const size = (searchParams && searchParams.size) ?? 3;
 
     const orders = await handleGetOrders(page, size);
 

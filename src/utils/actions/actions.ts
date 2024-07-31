@@ -104,7 +104,7 @@ export const handleGetOrders = async (page: number, size: number) => {
             Authorization: `Bearer ${session?.access_token}`,
             next: { tags: ['handleGetOrders'] },
         },
-        queryParams: { page, size },
+        queryParams: { page, size, sort: 'createdAt,desc' },
     })
         .then((res) => {
             return res;

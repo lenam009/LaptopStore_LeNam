@@ -61,7 +61,8 @@ function CreateProduct({ isOpen, setOpen }: IProps) {
 
         if (result.data) {
             await revalidateGetProducts();
-            message.success(result.message);
+            message.success('Create product success');
+            form.resetFields();
         } else {
             message.error(result.message);
         }

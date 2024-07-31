@@ -51,7 +51,7 @@ public class SecurityConfiguration {
         http
                 // Security spring
                 .csrf(c -> c.disable())
-                .cors(Customizer.withDefaults())
+                // .cors(Customizer.withDefaults())
 
                 .authorizeHttpRequests(
                         authz -> authz

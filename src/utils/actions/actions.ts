@@ -209,7 +209,7 @@ export const handleGetCartByUser = async () => {
     return action;
 };
 
-export const handleCreateCart = async (idProduct: string) => {
+export const handleAddToCart = async (idProduct: string) => {
     const session = await getServerSession(authOptions);
 
     const action = (await sendRequest<IBackendRes<IProduct>>({
@@ -223,7 +223,7 @@ export const handleCreateCart = async (idProduct: string) => {
             return res;
         })
         .catch((error) => {
-            console.log('error handleCreateCart', error);
+            console.log('error handleAddToCart', error);
             return error;
         })) as IBackendRes<IProduct>;
 

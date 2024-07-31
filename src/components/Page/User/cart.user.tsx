@@ -44,7 +44,7 @@ export default function CartUser() {
             message.error(result.message);
         }
 
-        console.log('data', values);
+        // console.log('data', values);
     };
 
     const onFinishFailed = (errorInfo: any) => {

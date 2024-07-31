@@ -1,8 +1,9 @@
 'use client';
 
+import { handleAddToCart, revalidateGetCartByUser } from '@/utils/actions/actions';
 import { useAppSelector } from '@/utils/redux/hook';
 import { getCartSelector } from '@/utils/redux/slice/cartSlice';
-import { Image, Pagination } from 'antd';
+import { Image, message, Pagination } from 'antd';
 import { useRouter } from 'next/navigation';
 
 interface IProps {
@@ -22,7 +23,16 @@ function HomepageUser({ meta, products }: IProps) {
         });
     };
 
-    const handleClickAddToCart = (idProduct: string) => {};
+    const handleClickAddToCart = async (idProduct: string) => {
+        const result = await handleAddToCart(idProduct);
+
+        if (result.data) {
+            message.success(result.message);
+            await revalidateGetCartByUser();
+        } else {
+            message.error(result.message);
+        }
+    };
 
     return (
         <div className="tab-className text-center pt-3">
@@ -75,7 +85,7 @@ function HomepageUser({ meta, products }: IProps) {
                                             </div>
                                             <div className="p-4 border border-secondary border-top-0 rounded-bottom">
                                                 <h5>
-                                                    <a href="#">Link product name</a>
+                                                    <span>{item.name}</span>
                                                 </h5>
 
                                                 <p>{item.shortDesc}</p>
@@ -83,6 +93,7 @@ function HomepageUser({ meta, products }: IProps) {
                                                 <div className="d-flex justify-content-center flex-lg-wrap flex-column">
                                                     <p className="text-dark fs-5 fw-bold mb-4">
                                                         {item.price
+                                                            // @ts-ignore
                                                             .toFixed(0)
                                                             .replace(
                                                                 /(\d)(?=(\d{3})+(?!\d))/g,

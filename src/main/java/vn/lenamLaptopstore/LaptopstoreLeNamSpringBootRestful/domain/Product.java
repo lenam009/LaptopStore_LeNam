@@ -3,12 +3,17 @@ package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
@@ -59,5 +64,12 @@ public class Product {
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     private List<OrderDetail> orderDetails;
+
+    // @ManyToMany(fetch = FetchType.LAZY)
+    // // Vẫn có skills nhưng bỏ thuộc tính jobs của skills
+    // // @JsonIgnoreProperties(value = "jobs")
+    // @JoinTable(name = "user_order", joinColumns = @JoinColumn(name = "user_id"),
+    // inverseJoinColumns = @JoinColumn(name = "order_id"))
+    // private List<Order> orders;
 
 }

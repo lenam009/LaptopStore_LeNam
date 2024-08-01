@@ -5,6 +5,8 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,6 +19,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
@@ -68,6 +71,12 @@ public class Order {
 
     private String createdBy;
     private String updatedBy;
+
+    // @ManyToMany(fetch = FetchType.LAZY, mappedBy = "orders")
+    // // Khi thêm trường này lên api nó sẽ luôn là null nhưng vẫn query được(all
+    // // method)
+    // @JsonIgnore
+    // private List<Product> products;
 
     // Persist equal Create
     @PrePersist

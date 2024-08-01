@@ -34,16 +34,22 @@ public class ProductService {
     private final UserService userService;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final FileService fileService;
 
     public ProductService(ProductRepository productRepository, CartRepository cartRepository,
             CartDetailRepository cartDetailRepository, UserService userService, OrderRepository orderRepository,
-            OrderDetailRepository orderDetailRepository) {
+            OrderDetailRepository orderDetailRepository, FileService fileService) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.userService = userService;
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
+        this.fileService = fileService;
+    }
+
+    public Product handleSaveProduct(Product product) {
+        return this.productRepository.save(product);
     }
 
     public Page<Product> getProductsByPageAndFilter(Specification<Product> specification,
@@ -96,6 +102,24 @@ public class ProductService {
         }
 
         this.productRepository.deleteById(id);
+    }
+
+    public Product handleUpdateProduct(Product product) throws InvalidException {
+        Optional<Product> productOptional = this.productRepository.findById(product.getId());
+
+        if (!productOptional.isPresent()) {
+            throw new InvalidException("Id product not exists...");
+        }
+
+        productOptional.get().setName(product.getName());
+        productOptional.get().setPrice(product.getPrice());
+        productOptional.get().setImage(product.getImage());
+        productOptional.get().setDetailDesc(product.getDetailDesc());
+        productOptional.get().setShortDesc(product.getShortDesc());
+        productOptional.get().setQuantity(product.getQuantity());
+        productOptional.get().setSold(product.getSold());
+
+        return this.productRepository.save(productOptional.get());
     }
 
     public Cart handleAddProductToCart(String email, long productId) throws InvalidException {
@@ -162,16 +186,13 @@ public class ProductService {
 
         Order order = null;
 
-        // create order
-
-        // create orderDetail
-
         // step 1: get cart by user
         Optional<Cart> cartOptional = this.cartRepository.findFirstCartByUser(user);
         if (cartOptional.isPresent()) {
             Cart cart = cartOptional.get();
             List<CartDetail> cartDetails = cart.getCartDetails();
 
+            // create order
             order = new Order();
             order.setUser(user);
             order.setReceiverName(orderPost.getReceiverName());
@@ -182,6 +203,7 @@ public class ProductService {
 
             order = this.orderRepository.save(order);
 
+            // create orderDetail
             if (cartDetails != null) {
                 for (CartDetail cd : cartDetails) {
                     OrderDetail orderDetail = new OrderDetail();
@@ -203,7 +225,6 @@ public class ProductService {
 
                 this.cartRepository.deleteById(cart.getId());
 
-                // step 3 : update session
             }
         } else {
             throw new InvalidException("User don't have cart...");

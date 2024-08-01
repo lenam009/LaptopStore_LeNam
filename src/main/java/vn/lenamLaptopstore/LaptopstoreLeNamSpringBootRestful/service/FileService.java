@@ -13,10 +13,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.multipart.MultipartFile;
+
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Response.ResUploadFileDTO;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.exception.InvalidException;
 
 @Service
 public class FileService {
@@ -26,6 +32,37 @@ public class FileService {
 
     public String truncateSpace(String file) {
         return file.replaceAll("\\s", "");
+    }
+
+    public ResUploadFileDTO handleCreateFile(MultipartFile file, String folder)
+            throws InvalidException, URISyntaxException, IOException {
+        // validate
+        if (file == null || file.isEmpty()) {
+            throw new InvalidException("File is empty...");
+        }
+
+        String fileName = this.truncateSpace(file.getOriginalFilename());
+
+        List<String> allowedExtensions = Arrays.asList("pdf", "jpg", "jpeg", "png", "doc", "docx");
+        // Note anymatch
+        boolean isValidContainExtension = allowedExtensions.stream().anyMatch(x -> fileName.toLowerCase().endsWith(x));
+
+        if (!isValidContainExtension) {
+            throw new InvalidException("Extension file not valid...");
+        }
+
+        // create a directory if folder not exists getResource
+        this.createDirectory(baseURI);
+        this.createDirectory(baseURI + folder);
+
+        // store file
+        String uploadFileName = this.store(file, folder, fileName);
+
+        // create dto
+        ResUploadFileDTO resUploadFileDTO = new ResUploadFileDTO(uploadFileName, Instant.now());
+
+        return resUploadFileDTO;
+
     }
 
     public void createDirectory(String uriDirectory) throws URISyntaxException {

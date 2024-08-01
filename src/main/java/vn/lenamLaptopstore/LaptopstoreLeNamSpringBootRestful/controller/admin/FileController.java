@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -17,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Product;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.User;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Response.ResUploadFileDTO;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.service.FileService;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.service.ProductService;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.service.UserService;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.SecurityUtil;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.annotation.ApiMessage;
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.exception.InvalidException;
 
@@ -27,12 +33,14 @@ import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.util.exception.Inva
 public class FileController {
 
     private final FileService fileService;
+    private final ProductService productService;
 
     @Value("${lenam.upload-file.base-uri}")
     private String baseURI;
 
-    public FileController(FileService fileService) {
+    public FileController(FileService fileService, ProductService productService) {
         this.fileService = fileService;
+        this.productService = productService;
     }
 
     @PostMapping("")
@@ -41,30 +49,29 @@ public class FileController {
             @RequestParam(name = "file", required = false) MultipartFile file,
             @RequestParam("folder") String folder) throws URISyntaxException, IOException, InvalidException {
 
-        // validate
-        if (file == null || file.isEmpty()) {
-            throw new InvalidException("File is empty...");
+        ResUploadFileDTO resUploadFileDTO = this.fileService.handleCreateFile(file, folder);
+
+        return ResponseEntity.ok().body(resUploadFileDTO);
+    }
+
+    @PutMapping("/updateFileProduct")
+    @ApiMessage("Upload file")
+    public ResponseEntity<ResUploadFileDTO> updateFile(
+            @RequestParam(name = "file", required = false) MultipartFile file,
+            @RequestParam("folder") String folder, @RequestParam("idProduct") Long idProduct)
+            throws URISyntaxException,
+            IOException, InvalidException {
+
+        Product product = this.productService.getProductById(idProduct);
+
+        if (!product.getImage().isEmpty()) {
+            this.fileService.deleteFile(product.getImage(), folder);
         }
 
-        String fileName = this.fileService.truncateSpace(file.getOriginalFilename());
+        ResUploadFileDTO resUploadFileDTO = this.fileService.handleCreateFile(file, folder);
 
-        List<String> allowedExtensions = Arrays.asList("pdf", "jpg", "jpeg", "png", "doc", "docx");
-        // Note anymatch
-        boolean isValidContainExtension = allowedExtensions.stream().anyMatch(x -> fileName.toLowerCase().endsWith(x));
-
-        if (!isValidContainExtension) {
-            throw new InvalidException("Extension file not valid...");
-        }
-
-        // create a directory if folder not exists getResource
-        this.fileService.createDirectory(baseURI);
-        this.fileService.createDirectory(baseURI + folder);
-
-        // store file
-        String uploadFileName = this.fileService.store(file, folder, fileName);
-
-        // create dto
-        ResUploadFileDTO resUploadFileDTO = new ResUploadFileDTO(uploadFileName, Instant.now());
+        product.setImage(resUploadFileDTO.getFileName());
+        this.productService.handleSaveProduct(product);
 
         return ResponseEntity.ok().body(resUploadFileDTO);
     }

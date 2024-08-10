@@ -1,5 +1,7 @@
 import HomepageUser from '@/components/Page/User/homepage.user';
+import routes from '@/config/routes/routes';
 import { handleGetCartByUser, handleGetProducts } from '@/utils/actions/actions';
+import { redirect } from 'next/navigation';
 
 interface IProps {
     searchParams: {

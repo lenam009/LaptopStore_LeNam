@@ -92,8 +92,8 @@ public class Order {
         this.setUpdatedBy(
                 SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : null);
 
-        this.setUpdatedBy(
-                "le nam update");
+        // this.setUpdatedBy(
+        // "le nam update");
         this.setUpdatedAt(Instant.now());
     }
 

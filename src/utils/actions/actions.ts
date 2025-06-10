@@ -196,6 +196,7 @@ export const handleGetCartByUser = async () => {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${session?.access_token}`,
+            next: { tags: ['handleGetCartByUser'] },
         },
     })
         .then((res) => {

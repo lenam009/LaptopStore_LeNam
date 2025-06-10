@@ -102,12 +102,13 @@ public class AuthController {
 
                 Optional<User> currentUser = this.userService.getUserByEmail(email);
 
-                ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUser.get().getId(),
-                                currentUser.get().getEmail(),
-                                currentUser.get().getFullName(), currentUser.get().getRole());
+                // ResLoginDTO.UserLogin userLogin = new
+                // ResLoginDTO.UserLogin(currentUser.get().getId(),
+                // currentUser.get().getEmail(),
+                // currentUser.get().getFullName(), currentUser.get().getRole());
 
-                ResLoginDTO.UserGetAccount userGetAccount = new ResLoginDTO.UserGetAccount();
-                userGetAccount.setUser(userLogin);
+                // ResLoginDTO.UserGetAccount userGetAccount = new ResLoginDTO.UserGetAccount();
+                // userGetAccount.setUser(userLogin);
 
                 return ResponseEntity.ok().body(currentUser.get());
         }

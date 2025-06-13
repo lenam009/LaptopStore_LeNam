@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.Product;
 
+// Bài 74
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 

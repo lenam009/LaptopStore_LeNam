@@ -35,6 +35,7 @@ public class FileController {
     private final FileService fileService;
     private final ProductService productService;
 
+    // Use pwd in cmd (in folder file laptopstore_lenam) to get link
     @Value("${lenam.upload-file.base-uri}")
     private String baseURI;
 

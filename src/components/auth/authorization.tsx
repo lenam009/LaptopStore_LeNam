@@ -29,7 +29,9 @@ export default async function Authorization({ authorization, children }: IProps)
     if (isAdminSession === 'ADMIN' && currentURl === routes.home.user.path) {
         redirect(routes.home.admin.path);
     } else if (isAdminSession === 'USER' && currentURl === routes.home.admin.path) {
-        redirect(routes.home.user.path);
+        // console.log('đúng', isAdminSession, currentURl);
+
+        redirect('/');
     }
 
     if (authorization !== isAdminSession) {

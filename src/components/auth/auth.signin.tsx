@@ -38,11 +38,11 @@ export default function AuthSignin() {
                 router.push(routes.home.admin.path);
             else if (session && session?.user.role.id === 'USER')
                 router.push(routes.home.user.path);
+        } else {
+            // refresh redux
+            dispatch(setUser(undefined));
+            dispatch(setCart({ id: '', cartDetails: [], sum: 0, totalPrice: 0 }));
         }
-
-        // refresh redux
-        dispatch(setUser(undefined));
-        dispatch(setCart({ id: '', cartDetails: [], sum: 0, totalPrice: 0 }));
     }, [session]);
 
     const handleOnSubmit = async (values: any) => {

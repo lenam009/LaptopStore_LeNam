@@ -33,11 +33,12 @@ export default function AuthSignin() {
     const router = useRouter();
 
     useEffect(() => {
-        if (session && session.user)
+        if (session && session.user) {
             if (session && session?.user.role.id === 'ADMIN')
                 router.push(routes.home.admin.path);
             else if (session && session?.user.role.id === 'USER')
                 router.push(routes.home.user.path);
+        }
 
         // refresh redux
         dispatch(setUser(undefined));

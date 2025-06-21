@@ -112,6 +112,7 @@ public class FileService {
         return tmpDir.length();
     }
 
+    // Not use
     public InputStreamResource getResource(String fileName, String folder)
             throws URISyntaxException, FileNotFoundException {
         URI uri = new URI(baseURI + folder + "/" + fileName);

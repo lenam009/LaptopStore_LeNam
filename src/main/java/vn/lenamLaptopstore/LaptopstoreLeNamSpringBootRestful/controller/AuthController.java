@@ -48,7 +48,7 @@ public class AuthController {
 
         @PostMapping("/login")
         @ApiMessage(value = "Login")
-        public ResponseEntity<ResLoginDTO> postMethodName(@Valid @RequestBody ReqLoginDTO reqLoginDTO) {
+        public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO reqLoginDTO) {
 
                 // Nạp input gồm username/password vào Security
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

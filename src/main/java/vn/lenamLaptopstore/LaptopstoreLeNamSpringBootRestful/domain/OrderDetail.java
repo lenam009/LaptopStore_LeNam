@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.key_embeddable.OrderDetailKey;
+import vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.key_embeddable.OrderDetailKey;
 
 @Entity
 @Table(name = "order_detail")

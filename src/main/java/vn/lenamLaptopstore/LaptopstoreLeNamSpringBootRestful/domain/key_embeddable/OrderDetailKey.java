@@ -1,4 +1,4 @@
-package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.repository.key_embeddable;
+package vn.lenamLaptopstore.LaptopstoreLeNamSpringBootRestful.domain.key_embeddable;
 
 import java.io.Serializable;
 

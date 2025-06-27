@@ -1,6 +1,6 @@
 ### Link Backend : https://github.com/lenam009/LaptopStore_LeNam/tree/java_spring_restful
 
-### Công nghệ sử dụng: typescript, nextAuth, redux, next 14 appRouter
+### Công nghệ sử dụng: typescript, nextAuth, redux
 
 ### UI: Antd, Bootstrap
 
